@@ -1,10 +1,10 @@
 #include <QApplication>
-#include "QiwiMainWindow.hpp"
+#include "EditorMainWindow.hpp"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QiwiMainWindow w;
+    EditorMainWindow w;
     w.show();
 
     return a.exec();

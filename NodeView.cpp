@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 
 #include <iostream>
+#include <QPushButton>
 
 namespace Qiwi{
 
@@ -49,6 +50,10 @@ void NodeView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawRoundedRect( _rect, 10, 10 );
     painter->setPen( QPen( Qt::gray ) );
     painter->drawText( QRectF(30, 5, 95, 15), _name );
+
+//    QWidget *widget = new QPushButton("coucou");
+//
+//    painter->draw(widget);
 }
 
 QRectF NodeView::boundingRect() const

@@ -4,14 +4,16 @@
 #
 #-------------------------------------------------
 
-QT       += core gui declarative
+QT       += core gui declarative opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ShaderEditor
 TEMPLATE = app
 
-FORMS    += QiwiMainWindow.ui
+FORMS    += \
+    EditorMainWindow.ui \
+    RenderPassUi.ui
 
 HEADERS += \
     BezierCurveView.hpp \
@@ -19,8 +21,12 @@ HEADERS += \
     NodeLinkView.hpp \
     NodePortView.hpp \
     NodeView.hpp \
-    QiwiMainWindow.hpp \
-    TemporaryPortView.hpp
+    TemporaryPortView.hpp \
+    EditorMainWindow.hpp \
+    RenderPass.hh \
+    RenderPassUi.h \
+    RenderPassView.hh \
+    OpenGLContext.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -29,5 +35,9 @@ SOURCES += \
     NodeLinkView.cpp \
     NodePortView.cpp \
     NodeView.cpp \
-    QiwiMainWindow.cpp \
-    TemporaryPortView.cpp
+    TemporaryPortView.cpp \
+    EditorMainWindow.cpp \
+    RenderPass.cpp \
+    RenderPassUi.cpp \
+    RenderPassView.cpp \
+    OpenGLContext.cpp

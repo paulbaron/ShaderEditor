@@ -6,20 +6,21 @@
 
 #include "Commons.hpp"
 
-namespace Ui {
-    class QiwiMainWindow;
+namespace Ui
+{
+    class EditorMainWindow;
 }
 
-class QiwiMainWindow : public QMainWindow
+class EditorMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit QiwiMainWindow(QWidget *parent = 0);
-    ~QiwiMainWindow();
+    explicit EditorMainWindow(QWidget *parent = 0);
+    ~EditorMainWindow();
 
 private:
-    Ui::QiwiMainWindow *ui;
+    Ui::EditorMainWindow *ui;
     QGraphicsScene _scene;
 };
 
