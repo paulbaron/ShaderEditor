@@ -11,33 +11,33 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ShaderEditor
 TEMPLATE = app
 
-FORMS    += \
+FORMS += \
     EditorMainWindow.ui \
     RenderPassUi.ui
 
 HEADERS += \
     BezierCurveView.hpp \
     Commons.hpp \
+    EditorMainWindow.hpp \
     NodeLinkView.hpp \
     NodePortView.hpp \
     NodeView.hpp \
-    TemporaryPortView.hpp \
-    EditorMainWindow.hpp \
+    OpenGLContext.hh \
     RenderPass.hh \
     RenderPassUi.h \
     RenderPassView.hh \
-    OpenGLContext.hh
+    TemporaryPortView.hpp
 
 SOURCES += \
     BezierCurveView.cpp \
     Commons.cpp \
+    EditorMainWindow.cpp \
     main.cpp \
     NodeLinkView.cpp \
     NodePortView.cpp \
     NodeView.cpp \
-    TemporaryPortView.cpp \
-    EditorMainWindow.cpp \
+    OpenGLContext.cpp \
     RenderPass.cpp \
     RenderPassUi.cpp \
     RenderPassView.cpp \
-    OpenGLContext.cpp
+    TemporaryPortView.cpp
