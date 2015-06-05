@@ -1,10 +1,12 @@
 #ifndef RENDERPASSVIEW_H
 #define RENDERPASSVIEW_H
 
-#include <QGLWidget>
-#include <QOpenGLTexture>
+#include "RenderPass.hh"
 
-class RenderPassView : public QGLWidget
+#include <QOpenGLWidget>
+#include <QOpenGLBuffer>
+
+class RenderPassView : public QOpenGLWidget
 {
     Q_OBJECT
 
@@ -15,7 +17,9 @@ public:
     void paintGL();
 
 private:
-    QOpenGLTexture *_texture;
+    QOpenGLShaderProgram *_program;
+    QOpenGLBuffer _vbo;
+    RenderPass *_currentPass;
 };
 
 #endif // RENDERPASSVIEW_H
