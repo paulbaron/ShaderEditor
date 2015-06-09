@@ -46,8 +46,10 @@ Goals for tomorrow:
 - Code a simple data structure editor (to get the camera matrix in the shader)
 - Allow to choose in the render pass between post-FX (draw a simpe quad on the screen) and 3D models (for the moment, just a 3D cube)
 
+**Thought:** It could be nice to change the parameters of the textures in the render pass.
+
 ## 9 june 2015
-I need to think about a way to handle the data structures in my program.
+**Thought:** I need to think about a way to handle the data structures in my program.
 What is a data structure?
 - Set of uniform (constant) variables given to a shader
 - Vertex buffer (geometry) that needs to be drawn
