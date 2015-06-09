@@ -21,10 +21,10 @@ Goals for tomorrow:
 ## 5 june 2015
 Simple display of a texture in the editor coded.
 The data structure for the render passes has been created.
-I found a way to handle all the OpenGL calls in the same set of functions with Qt
+I found a way to handle all the _OpenGL_ calls in the same set of functions with _Qt_
 
 Questions:
-- Should I keep using Qiwi? It seems a little buggy...
+- Should I keep using _Qiwi_? It seems a little buggy...
 
 Goals for next time:
 - Use the RenderPass object to draw a 3D cube
@@ -34,7 +34,7 @@ Goals for next time:
 ## 8 june 2015
 Texture editor coded: it is now possible to add/remove a texture, choose its _OpenGL_ properties, its size and its name in the editor.
 3D cube drawing is not possible right now, it might be better to start coding a data structure creator to pass some useful information to the shaders (camera matrix for example) before starting to draw 3D objects.
-No problem with the Qt threading for the moment: OpenGL seems to work pretty well.
+No problem with the _Qt_ threading for the moment: _OpenGL_ seems to work pretty well.
 
 The project will be composed of 4 main panels:
 - The render pass graph node, to link the different render pass together
@@ -45,3 +45,41 @@ The project will be composed of 4 main panels:
 Goals for tomorrow:
 - Code a simple data structure editor (to get the camera matrix in the shader)
 - Allow to choose in the render pass between post-FX (draw a simpe quad on the screen) and 3D models (for the moment, just a 3D cube)
+
+## 9 june 2015
+I need to think about a way to handle the data structures in my program.
+What is a data structure?
+- Set of uniform (constant) variables given to a shader
+- Vertex buffer (geometry) that needs to be drawn
+Some uniform change by draw call (for each geometry drawed, for example the texture of the current geometry) and other are constant over all the draw calls.
+It would be nice to choose how the uniform are given.
+Could we organize the data in a tree?
+
+Sample:
+- Draw All Elements
+  - Draw Object
+    - Draw Call 1
+      - **Mesh 1** _actual draw call here_
+      - **Texture Mesh 1** _uniform variable_
+    - Draw Call 2
+      - **Mesh 2** _actual draw call here_
+      - **Texture Mesh 2** _uniform variable_
+    - **Object Transform** _uniform variable_
+  - **Camera Transform and Projection** _uniform variable_
+
+There should not be more than one draw call per branch of the tree.
+This tree should actually be specific to the render pass.
+It might be nice to have the data separated from this tree. But for the 3D objects, we need to keep the hierarchy to see the link between the textures/material data and the vertices.
+So the data structure editor must allow to create/load branches that can then be used as building blocks for the update of the data in the render pass.
+
+Actual data corresponding to the sample above:
+- Draw Call 1
+  - **Mesh 1** _actual draw call here_
+  - **Texture Mesh 1** _uniform variable_
+- Draw Call 2
+  - **Mesh 2** _actual draw call here_
+  - **Texture Mesh 2** _uniform variable_
+- **Object Transform** _uniform variable_
+- **Camera Transform and Projection** _uniform variable_
+
+TODO: Check how to handle a tree view with complex elements in _Qt_
