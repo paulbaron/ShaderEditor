@@ -51,9 +51,10 @@ I need to think about a way to handle the data structures in my program.
 What is a data structure?
 - Set of uniform (constant) variables given to a shader
 - Vertex buffer (geometry) that needs to be drawn
-Some uniform change by draw call (for each geometry drawed, for example the texture of the current geometry) and other are constant over all the draw calls.
+
+Some uniform change by draw call (for each geometry drawed, for example the texture or material of the current geometry) and other are constant over all the draw calls.
 It would be nice to choose how the uniform are given.
-Could we organize the data in a tree?
+Could we organize that as a tree?
 
 Sample:
 - Draw All Elements
@@ -69,7 +70,7 @@ Sample:
 
 There should not be more than one draw call per branch of the tree.
 This tree should actually be specific to the render pass.
-It might be nice to have the data separated from this tree. But for the 3D objects, we need to keep the hierarchy to see the link between the textures/material data and the vertices.
+It might be nice to have the data separated from this tree so that we can give them in different ways depending on the render pass. But for the 3D objects, we need to keep the hierarchy to see the link between the textures/material data and the vertices.
 So the data structure editor must allow to create/load branches that can then be used as building blocks for the update of the data in the render pass.
 
 Actual data corresponding to the sample above:
