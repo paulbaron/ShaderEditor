@@ -1,37 +1,45 @@
 ## 3 June 2015
+
+#### Done today
 Downloaded _Qt creator_ to simplify the creation of GUI with Qt.
 I have also searched for a simple node graph editor that I could use for my shader editor and I found _Qiwi_ which is a standalone and very light and easy to understand piece of code to create node graphs.
 
-Goals for tomorrow:
+#### Goals for tomorrow
 - Modify the code of _Qiwi_ so that I can integrate an _OpenGL_ textures viewer in each node
 - Try to integrate a simple text editor in each node
 - Try to make the nodes expand on click so that the user can easily see the whole node hierarchy on his screen
 
 ## 4 june 2015
+
+#### Done today
 Integration of a basic _OpenGL_ widget to the editor and 2 text editor for the fragment and vertex shader.
 To heavy to display _OpenGL_ textures directly on the nodes: the user will have to select a node to see its texture output.
 
-Questions:
+#### Questions
 - How to handle multiple _OpenGL_ widgets at the same time? (thread safe...)
 
-Goals for tomorrow:
+#### Goals for tomorrow
 - Display a simple cube
 - Data structure for handling the creation an linkage of multiple render pass
 
 ## 5 june 2015
+
+#### Done today
 Simple display of a texture in the editor coded.
 The data structure for the render passes has been created.
 I found a way to handle all the _OpenGL_ calls in the same set of functions with _Qt_
 
-Questions:
+#### Questions
 - Should I keep using _Qiwi_? It seems a little buggy...
 
-Goals for next time:
+#### Goals for next time:
 - Use the RenderPass object to draw a 3D cube
 - Display an OpenGL frame buffer object on screen (the previously drawed cube)
 - Link the interface with the RenderPass objects (possibility to create a render pass, click on it and see its output)
 
 ## 8 june 2015
+
+#### Done today
 Texture editor coded: it is now possible to add/remove a texture, choose its _OpenGL_ properties, its size and its name in the editor.
 3D cube drawing is not possible right now, it might be better to start coding a data structure creator to pass some useful information to the shaders (camera matrix for example) before starting to draw 3D objects.
 No problem with the _Qt_ threading for the moment: _OpenGL_ seems to work pretty well.
@@ -42,16 +50,16 @@ The project will be composed of 4 main panels:
 - The texture editor to create and set the properties of the textures
 - The data structure editor to create simple data structures to feed to the shader
 
-Goals for tomorrow:
+#### Goals for tomorrow
 - Code a simple data structure editor (to get the camera matrix in the shader)
 - Allow to choose in the render pass between post-FX (draw a simpe quad on the screen) and 3D models (for the moment, just a 3D cube)
 
-####Thought
+#### Thought
 It could be nice to change the parameters of the textures in the render pass.
 
 ## 9 june 2015
 
-####Thought
+#### Thought
 I need to think about a way to handle the data structures in my program.
 What is a data structure?
 - Set of uniform (constant) variables given to a shader
@@ -88,9 +96,9 @@ Actual data corresponding to the sample above:
 - **Object Transform** _uniform variable_
 - **Camera Transform and Projection** _uniform variable_
 
-TODO: Check how to handle a tree view with complex elements in _Qt_
+**TODO**: Check how to handle a tree view with complex elements in _Qt_
 
-####Thought
+#### Thought
 Should I keep the texture editor panel? Can it be merged in the data structure editor?
 Two kind of textures:
 - Render textures to draw in
@@ -107,7 +115,15 @@ They will be handled by the following managers:
 - Render pass manager -> keep the render pass graph node with all the render pass data
 - The data manager -> handle a collection of data structure, organized as a tree
 
-####Thought
+#### Thought
 Organization of the model view:
-- Model Data -> contains slots to update its attribute and the widget to display (recreated each time) with access to the UI
+- Model Data -> contains slots to update its attribute and the widget to display with access to the UI
 - View Data -> contains the UI created with the designer
+
+#### Done today
+I have started the implementation of the data structure editor and manager and I have merged the texture editor in it.
+
+#### Goals for tomorrow
+- Finish the data editor so that we can add and remove data structure
+- The user must be able to reorganize the data tree
+- Add a simple cube with vertex/color to load in the vertex buffer data
