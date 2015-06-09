@@ -14,7 +14,8 @@ TEMPLATE = app
 FORMS += \
     EditorMainWindow.ui \
     RenderPassUi.ui \
-    TextureEditor.ui
+    DataStructureEditor.ui \
+    DataStructure/View/TextureDataView.ui
 
 HEADERS += \
     BezierCurveView.hpp \
@@ -27,8 +28,18 @@ HEADERS += \
     RenderPassUi.h \
     RenderPassView.hh \
     TemporaryPortView.hpp \
-    TextureEditor.hh \
-    OpenGLTextureManager.hh
+    DataStructureEditor.hh \
+    DataStructureManager.hh \
+    DataStructure/DataStructureManager.hh \
+    DataStructure/AbstractData.hh \
+    DataStructure/TextureData.hh \
+    DataStructure/VectorData.hh \
+    DataStructure/Mat2Data.hh \
+    DataStructure/Mat3Data.hh \
+    DataStructure/Mat4Data.hh \
+    DataStructure/VertexBufferData.hh \
+    DataStructure/View/TextureDataView.hh \
+    DataStructure/ContainerData.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -42,5 +53,13 @@ SOURCES += \
     RenderPassUi.cpp \
     RenderPassView.cpp \
     TemporaryPortView.cpp \
-    TextureEditor.cpp \
-    OpenGLTextureManager.cpp
+    DataStructureEditor.cpp \
+    DataStructure/DataStructureManager.cpp \
+    DataStructure/TextureData.cpp \
+    DataStructure/VectorData.cpp \
+    DataStructure/Mat2Data.cpp \
+    DataStructure/Mat3Data.cpp \
+    DataStructure/Mat4Data.cpp \
+    DataStructure/VertexBufferData.cpp \
+    DataStructure/View/TextureDataView.cpp \
+    DataStructure/ContainerData.cpp

@@ -89,3 +89,25 @@ Actual data corresponding to the sample above:
 - **Camera Transform and Projection** _uniform variable_
 
 TODO: Check how to handle a tree view with complex elements in _Qt_
+
+####Thought
+Should I keep the texture editor panel? Can it be merged in the data structure editor?
+Two kind of textures:
+- Render textures to draw in
+- Loaded textures, to sample
+
+But we can eventually draw in a loaded texture, so there is no real difference between those.
+
+finally, the program will only have 3 main panels:
+- The data structure editor
+- The render pass node graph
+- The render pass editor
+
+They will be handled by the following managers:
+- Render pass manager -> keep the render pass graph node with all the render pass data
+- The data manager -> handle a collection of data structure, organized as a tree
+
+####Thought
+Organization of the model view:
+- Model Data -> contains slots to update its attribute and the widget to display (recreated each time) with access to the UI
+- View Data -> contains the UI created with the designer
