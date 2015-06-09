@@ -36,7 +36,7 @@ Texture editor coded: it is now possible to add/remove a texture, choose its _Op
 3D cube drawing is not possible right now, it might be better to start coding a data structure creator to pass some useful information to the shaders (camera matrix for example) before starting to draw 3D objects.
 No problem with the Qt threading for the moment: OpenGL seems to work pretty well.
 
-The project will be composed of 3 main panels:
+The project will be composed of 4 main panels:
 - The render pass graph node, to link the different render pass together
 - The render pass editor, to edit a render pass (the shaders code and the different properties of the pass)
 - The texture editor to create and set the properties of the textures
