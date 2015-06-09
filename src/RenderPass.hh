@@ -2,7 +2,6 @@
 #define RENDERPASS_H
 
 #include <QVector>
-#include <QOpenGLFramebufferObject>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLShader>
 
@@ -14,8 +13,14 @@ public:
 
     QOpenGLShaderProgram *getProgram() const { return (_program); }
 
+    void setVertexCode(QString code);
+    void setFragmentCode(QString code);
+
 private:
-    QOpenGLFramebufferObject *_fbo;
+    QString _vertexCode;
+    QString _fragmentCode;
+
+    GLuint _fbo;
     QOpenGLShader *_vertex;
     QOpenGLShader *_fragment;
     QOpenGLShaderProgram *_program;

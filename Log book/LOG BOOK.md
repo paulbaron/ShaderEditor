@@ -26,7 +26,22 @@ I found a way to handle all the OpenGL calls in the same set of functions with Q
 Questions:
 - Should I keep using Qiwi? It seems a little buggy...
 
-Goals for tomorrow:
+Goals for next time:
 - Use the RenderPass object to draw a 3D cube
 - Display an OpenGL frame buffer object on screen (the previously drawed cube)
 - Link the interface with the RenderPass objects (possibility to create a render pass, click on it and see its output)
+
+## 8 june 2015
+Texture editor coded: it is now possible to add/remove a texture, choose its _OpenGL_ properties, its size and its name in the editor.
+3D cube drawing is not possible right now, it might be better to start coding a data structure creator to pass some useful information to the shaders (camera matrix for example) before starting to draw 3D objects.
+No problem with the Qt threading for the moment: OpenGL seems to work pretty well.
+
+The project will be composed of 3 main panels:
+- The render pass graph node, to link the different render pass together
+- The render pass editor, to edit a render pass (the shaders code and the different properties of the pass)
+- The texture editor to create and set the properties of the textures
+- The data structure editor to create simple data structures to feed to the shader
+
+Goals for tomorrow:
+- Code a simple data structure editor (to get the camera matrix in the shader)
+- Allow to choose in the render pass between post-FX (draw a simpe quad on the screen) and 3D models (for the moment, just a 3D cube)

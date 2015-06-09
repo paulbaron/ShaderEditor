@@ -13,7 +13,8 @@ TEMPLATE = app
 
 FORMS += \
     EditorMainWindow.ui \
-    RenderPassUi.ui
+    RenderPassUi.ui \
+    TextureEditor.ui
 
 HEADERS += \
     BezierCurveView.hpp \
@@ -22,11 +23,12 @@ HEADERS += \
     NodeLinkView.hpp \
     NodePortView.hpp \
     NodeView.hpp \
-    OpenGLContext.hh \
     RenderPass.hh \
     RenderPassUi.h \
     RenderPassView.hh \
-    TemporaryPortView.hpp
+    TemporaryPortView.hpp \
+    TextureEditor.hh \
+    OpenGLTextureManager.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -36,8 +38,9 @@ SOURCES += \
     NodeLinkView.cpp \
     NodePortView.cpp \
     NodeView.cpp \
-    OpenGLContext.cpp \
     RenderPass.cpp \
     RenderPassUi.cpp \
     RenderPassView.cpp \
-    TemporaryPortView.cpp
+    TemporaryPortView.cpp \
+    TextureEditor.cpp \
+    OpenGLTextureManager.cpp

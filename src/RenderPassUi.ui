@@ -36,7 +36,7 @@
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
-          <widget class="QPlainTextEdit" name="plainTextEdit"/>
+          <widget class="QPlainTextEdit" name="vertexCodeEdit"/>
          </item>
         </layout>
        </widget>
@@ -46,7 +46,7 @@
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
-          <widget class="QPlainTextEdit" name="plainTextEdit"/>
+          <widget class="QPlainTextEdit" name="fragmentCodeEdit"/>
          </item>
         </layout>
        </widget>

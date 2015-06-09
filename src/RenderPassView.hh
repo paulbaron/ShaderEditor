@@ -1,10 +1,9 @@
 #ifndef RENDERPASSVIEW_H
 #define RENDERPASSVIEW_H
 
-#include "RenderPass.hh"
-
 #include <QOpenGLWidget>
 #include <QOpenGLBuffer>
+#include <QOpenGLShaderProgram>
 
 class RenderPassView : public QOpenGLWidget
 {
@@ -19,7 +18,6 @@ public:
 private:
     QOpenGLShaderProgram *_program;
     QOpenGLBuffer _vbo;
-    RenderPass *_currentPass;
 };
 
 #endif // RENDERPASSVIEW_H

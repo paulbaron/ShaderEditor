@@ -4,6 +4,7 @@
 #include "NodePortView.hpp"
 
 #include "RenderPassUi.h"
+#include "TextureEditor.hh"
 
 using namespace Qiwi;
 
@@ -14,7 +15,11 @@ EditorMainWindow::EditorMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->verticalLayout->addWidget(new RenderPassUi());
+    RenderPassUi *renderPassUi = new RenderPassUi();
+    TextureEditor *textureEditor = new TextureEditor();
+
+    ui->horizontalLayout->addWidget(textureEditor);
+    ui->verticalLayout->addWidget(renderPassUi);
 
     ui->graphicsView->setScene( &_scene );
     ui->graphicsView->setRenderHints( QPainter::Antialiasing );
