@@ -31,7 +31,7 @@
      <item>
       <widget class="QLabel" name="label_5">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Min Filter</string>
@@ -41,28 +41,7 @@
      <item>
       <widget class="QComboBox" name="minFilter">
        <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Pixel Format</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="texturePixelFormat">
-       <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -73,7 +52,7 @@
      <item>
       <widget class="QLabel" name="label_6">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -86,28 +65,28 @@
      <item>
       <widget class="QComboBox" name="horizontalWrap">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="8" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="label_3">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
-        <string>Texture Name </string>
+        <string>Pixel Format</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="textureName">
+      <widget class="QComboBox" name="texturePixelFormat">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -118,7 +97,7 @@
      <item>
       <widget class="QLabel" name="label_7">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Vertical Wrap</string>
@@ -128,18 +107,28 @@
      <item>
       <widget class="QComboBox" name="verticalWrap">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="9" column="0">
+    <widget class="QPushButton" name="saveChanges">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Save Changes</string>
+     </property>
+    </widget>
    </item>
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="label_4">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Mag Filter</string>
@@ -149,28 +138,18 @@
      <item>
       <widget class="QComboBox" name="magFilter">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="10" column="0">
-    <widget class="QPushButton" name="saveChanges">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Save Changes</string>
-     </property>
-    </widget>
    </item>
    <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Texture Size</string>
@@ -180,7 +159,7 @@
      <item>
       <widget class="QSpinBox" name="Width">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="minimum">
         <number>1</number>
@@ -196,7 +175,7 @@
      <item>
       <widget class="QSpinBox" name="Height">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="minimum">
         <number>1</number>

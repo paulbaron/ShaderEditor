@@ -11,11 +11,13 @@ public:
     ContainerData();
     ~ContainerData();
 
-    bool addSon(AbstractData *toAdd);
-    void removeSon(AbstractData *toRm);
+    void addSon(AbstractData *toAdd);
+    bool removeSon(AbstractData *toRm);
+
+    AbstractData *getData(QString name) const;
 
 public slots:
-    void saveChanges() { }
+    void saveChanges();
 
 private:
     QList<AbstractData*> _sons;

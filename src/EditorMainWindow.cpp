@@ -4,7 +4,6 @@
 #include "NodePortView.hpp"
 
 #include "RenderPassUi.h"
-#include "TextureDataView.hh"
 #include "DataStructureEditor.hh"
 
 using namespace Qiwi;
@@ -17,10 +16,8 @@ EditorMainWindow::EditorMainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     RenderPassUi *renderPassUi = new RenderPassUi();
-    TextureDataView *textureEditor = new TextureDataView();
     DataStructureEditor *dataStructureEditor = new DataStructureEditor();
 
-    ui->horizontalLayout->addWidget(textureEditor);
     ui->horizontalLayout->addWidget(dataStructureEditor);
     ui->verticalLayout->addWidget(renderPassUi);
 

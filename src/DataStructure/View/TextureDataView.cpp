@@ -1,14 +1,12 @@
 #include "TextureDataView.hh"
 #include "ui_TextureDataView.h"
 
-#include "OpenGLTextureManager.hh"
-
 #include <QErrorMessage>
 #include <assert.h>
 
 TextureDataView::TextureDataView(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TextureEditor)
+    ui(new Ui::TextureDataView)
 {
     ui->setupUi(this);
 

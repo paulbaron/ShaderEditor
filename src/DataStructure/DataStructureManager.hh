@@ -11,11 +11,12 @@ public:
     static DataStructureManager *getManager();
 
     void addData(AbstractData *toAdd);
-    void setCurrent(QString name);
+    void setCurrent(AbstractData *current);
     void setCurrentNull();
+    AbstractData *getCurrent() const;
     void removeCurrent();
 
-    bool contains(QString name);
+    AbstractData *getData(QString name);
 
 private:
     DataStructureManager();

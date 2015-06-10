@@ -1,5 +1,4 @@
 #include <QApplication>
-#include "OpenGLTextureManager.hh"
 #include "EditorMainWindow.hpp"
 
 int main(int argc, char *argv[])

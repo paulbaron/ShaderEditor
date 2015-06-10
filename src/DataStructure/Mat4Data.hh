@@ -9,8 +9,6 @@ public:
     Mat4Data();
     ~Mat4Data();
 
-    QWidget *getTypeEditor();
-
 public slots:
     void saveChanges();
 };

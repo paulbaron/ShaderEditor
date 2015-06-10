@@ -30,9 +30,9 @@ static GLenum textureFormatTable[][3] =
     {(GLenum)-1, (GLenum)-1, (GLenum)-1}
 };
 
-TextureData::TextureData() :
-    _type(DATA_TEXTURE)
+TextureData::TextureData()
 {
+    _type = DATA_TEXTURE;
     _view = new TextureDataView();
     // Set the default texture parameters
     glGenTextures(1, &_id);
@@ -49,7 +49,6 @@ TextureData::TextureData() :
 
 TextureData::~TextureData()
 {
-    delete _view;
     glDeleteTextures(1, &_id);
 }
 
@@ -145,9 +144,9 @@ int TextureData::getIndexFromFilterMode(GLenum filter) const
 
 void TextureData::getFormatInfo(GLenum internalFormat, GLenum &format, GLenum &type)
 {
-    int idx = getIndexFromFormat(internalFormat);
-    format = _textureFormatTable[idx][1];
-    type = _textureFormatTable[idx][2];
+    int idx = getIndexFromPixelFormat(internalFormat);
+    format = textureFormatTable[idx][1];
+    type = textureFormatTable[idx][2];
 }
 
 void TextureData::updateUi()
@@ -165,6 +164,8 @@ void TextureData::updateUi()
 
 void TextureData::updateOpenGLParameters()
 {
+    GLenum format, type;
+
     getFormatInfo(_format, format, type);
     glBindTexture(GL_TEXTURE_2D, _id);
     glTexImage2D(GL_TEXTURE_2D, 0, _format, _width, _height, 0, format, type, NULL);

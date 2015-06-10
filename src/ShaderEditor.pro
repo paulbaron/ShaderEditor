@@ -15,7 +15,10 @@ FORMS += \
     EditorMainWindow.ui \
     RenderPassUi.ui \
     DataStructureEditor.ui \
-    DataStructure/View/TextureDataView.ui
+    DataStructure/View/TextureDataView.ui \
+    DataStructure/View/ContainerView.ui \
+    DataStructure/View/Vec3BufferDataView.ui \
+    DataStructure/View/Mat4DataView.ui
 
 HEADERS += \
     BezierCurveView.hpp \
@@ -37,9 +40,13 @@ HEADERS += \
     DataStructure/Mat2Data.hh \
     DataStructure/Mat3Data.hh \
     DataStructure/Mat4Data.hh \
-    DataStructure/VertexBufferData.hh \
     DataStructure/View/TextureDataView.hh \
-    DataStructure/ContainerData.hh
+    DataStructure/ContainerData.hh \
+    DataStructure/View/ContainerView.hh \
+    DataStructure/Vec3BufferData.hh \
+    DataStructure/View/Vec3BufferDataView.hh \
+    DataStructure/View/Mat4DataView.hh \
+    DataStructure/View/GlmVecTableModel.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -60,6 +67,10 @@ SOURCES += \
     DataStructure/Mat2Data.cpp \
     DataStructure/Mat3Data.cpp \
     DataStructure/Mat4Data.cpp \
-    DataStructure/VertexBufferData.cpp \
     DataStructure/View/TextureDataView.cpp \
-    DataStructure/ContainerData.cpp
+    DataStructure/ContainerData.cpp \
+    DataStructure/AbstractData.cpp \
+    DataStructure/View/ContainerView.cpp \
+    DataStructure/Vec3BufferData.cpp \
+    DataStructure/View/Vec3BufferDataView.cpp \
+    DataStructure/View/Mat4DataView.cpp

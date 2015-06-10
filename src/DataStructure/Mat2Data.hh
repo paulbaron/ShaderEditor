@@ -10,8 +10,6 @@ public:
     Mat2Data();
     ~Mat2Data();
 
-    QWidget *getTypeEditor();
-
 public slots:
     void saveChanges();
 

@@ -20,21 +20,13 @@ public:
         DATA_CONTAINER
     };
 
-    AbstractData()
-    {
-        static int id = 0;
-        _name = "Data " + QString::number(id++);
-        _view = NULL;
-    }
+    AbstractData();
+    virtual ~AbstractData();
 
-    virtual ~AbstractData() { }
-
-    EDataTypes getType() const { return (_type); }
-
-    virtual QWidget *getView() const { return (_view); }
-
-    QString getName() const { return (_name); }
-    void setName(QString name) { _name = name; }
+    EDataTypes getType() const;
+    QWidget *getView() const;
+    QString getName() const;
+    void setName(QString name);
 
 public slots:
     virtual void saveChanges() = 0;
@@ -43,9 +35,7 @@ protected:
     AbstractData *_parent;
     QString _name;
     QWidget *_view;
-
-private:
-    const EDataTypes _type;
+    EDataTypes _type;
 };
 
 #endif // ABSTRACTDATA_H

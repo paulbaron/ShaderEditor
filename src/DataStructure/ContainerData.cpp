@@ -1,9 +1,10 @@
 #include "ContainerData.hh"
 #include "DataStructureManager.hh"
+#include "View/ContainerView.hh"
 
 ContainerData::ContainerData()
 {
-
+    _view = new ContainerView;
 }
 
 ContainerData::~ContainerData()
@@ -17,12 +18,63 @@ ContainerData::~ContainerData()
     }
 }
 
-bool ContainerData::addSon(AbstractData *toAdd)
+void ContainerData::addSon(AbstractData *toAdd)
 {
-//    if (DataStructureManager::getManager()->contains(toAdd->getName()))
+    _sons.append(toAdd);
 }
 
-void ContainerData::removeSon(AbstractData *toRm)
+bool ContainerData::removeSon(AbstractData *toRm)
+{
+    QList<AbstractData*>::iterator it = _sons.begin();
+
+    while (it != _sons.end())
+    {
+        if (*it == toRm)
+        {
+            _sons.erase(it);
+            return (true);
+        }
+        else if ((*it)->getType() == AbstractData::DATA_CONTAINER)
+        {
+            ContainerData *container = static_cast<ContainerData*>(*it);
+
+            if (container->removeSon(toRm))
+            {
+                return (true);
+            }
+        }
+        ++it;
+    }
+    return (false);
+}
+
+AbstractData *ContainerData::getData(QString name) const
+{
+    QList<AbstractData*>::const_iterator it = _sons.begin();
+
+    while (it != _sons.end())
+    {
+        if ((*it)->getName() == name)
+        {
+            return (*it);
+        }
+        else if ((*it)->getType() == AbstractData::DATA_CONTAINER)
+        {
+            ContainerData *container = static_cast<ContainerData*>(*it);
+
+            AbstractData *retData = container->getData(name);
+
+            if (retData != NULL)
+            {
+                return (retData);
+            }
+        }
+        ++it;
+    }
+    return (NULL);
+}
+
+void ContainerData::saveChanges()
 {
 
 }

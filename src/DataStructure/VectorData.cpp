@@ -5,3 +5,7 @@ VectorData::VectorData()
 
 }
 
+void VectorData::saveChanges()
+{
+
+}

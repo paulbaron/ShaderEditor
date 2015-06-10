@@ -8,8 +8,6 @@ class VectorData : public AbstractData
 public:
     VectorData();
 
-    QWidget *getTypeEditor();
-
 public slots:
     void saveChanges();
 };
