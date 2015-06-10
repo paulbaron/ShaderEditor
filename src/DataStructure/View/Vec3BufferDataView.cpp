@@ -1,17 +1,22 @@
 #include "Vec3BufferDataView.hh"
 #include "ui_Vec3BufferDataView.h"
 #include "GlmVecTableModel.hh"
+#include "DoubleSpinBoxDelegate.hh"
 
 Vec3BufferDataView::Vec3BufferDataView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Vec3BufferDataView)
 {
     ui->setupUi(this);
-    ui->tableView->setModel(new GlmVecTableModel<glm::vec3>);
+
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->verticalHeader()->setStretchLastSection(false);
-    ui->tableView->setEditTriggers(QAbstractItemView::SelectedClicked);
+
+    ui->tableView->setEditTriggers(QAbstractItemView::DoubleClicked);
+    ui->tableView->setModel(new GlmVecTableModel<glm::vec3>(this));
+    ui->tableView->setItemDelegate(new DoubleSpinBoxDelegate(this));
+
     QObject::connect(ui->addButton, SIGNAL(released()),
                      this, SLOT(addRow()));
     QObject::connect(ui->deleteButton, SIGNAL(released()),

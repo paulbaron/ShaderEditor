@@ -46,7 +46,8 @@ HEADERS += \
     DataStructure/Vec3BufferData.hh \
     DataStructure/View/Vec3BufferDataView.hh \
     DataStructure/View/Mat4DataView.hh \
-    DataStructure/View/GlmVecTableModel.hh
+    DataStructure/View/GlmVecTableModel.hh \
+    DataStructure/View/DoubleSpinBoxDelegate.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -73,4 +74,5 @@ SOURCES += \
     DataStructure/View/ContainerView.cpp \
     DataStructure/Vec3BufferData.cpp \
     DataStructure/View/Vec3BufferDataView.cpp \
-    DataStructure/View/Mat4DataView.cpp
+    DataStructure/View/Mat4DataView.cpp \
+    DataStructure/View/DoubleSpinBoxDelegate.cpp

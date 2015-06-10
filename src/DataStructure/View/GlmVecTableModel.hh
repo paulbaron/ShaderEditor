@@ -9,7 +9,8 @@ template<class GlmVec>
 class GlmVecTableModel : public QAbstractTableModel
 {
 public:
-    GlmVecTableModel()
+    GlmVecTableModel(QObject *parent = 0) :
+        QAbstractTableModel(parent)
     {
         _buffer.push_back(GlmVec(0));
         _buffer.push_back(GlmVec(1));
@@ -30,7 +31,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const
     {
         if (role != Qt::DisplayRole)
-            return QVariant();
+            return QVariant::Invalid;
         if (orientation == Qt::Vertical)
         {
             return (QString::number(section));
@@ -46,7 +47,7 @@ public:
             else if (section == 3)
                 return (QString("W"));
         }
-        return (QVariant());
+        return (QVariant::Invalid);
     }
 
     QVariant data(const QModelIndex &index, int role) const
@@ -55,12 +56,24 @@ public:
         {
             return (QString::number(_buffer[index.row()][index.column()]));
         }
+        else if (role == Qt::EditRole)
+        {
+            return (_buffer[index.row()][index.column()]);
+        }
         return QVariant::Invalid;
     }
 
-    GlmVec *getData()
+    bool setData(const QModelIndex &index, const QVariant &value, int role)
     {
-        return (_buffer.data());
+        _buffer[index.row()][index.column()] = value.toFloat();
+    }
+
+    Qt::ItemFlags flags(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return (Qt::ItemIsEnabled);
+
+        return (QAbstractItemModel::flags(index) | Qt::ItemIsEditable);
     }
 
     bool insertRows(int row, int count, const QModelIndex &parent)
