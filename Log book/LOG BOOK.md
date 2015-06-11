@@ -127,3 +127,16 @@ I have started the implementation of the data structure editor and manager and I
 - Finish the data editor so that we can add and remove data structure
 - The user must be able to reorganize the data tree
 - Add a simple cube with vertex/color to load in the vertex buffer data
+
+## 10 june 2015
+
+#### Done today
+I have implemented the vertex buffer editor (only for vec3 for the moment) and I had some difficulties creating an editable dynamic table with _Qt_ using the QAbstractItemModel and the QItemDelegate.
+It is now also possible to load some presets (cube and plane), edit and add some data.
+So I now have the implementation of the vertex buffer in the data structure editor, but not yet the matrix that are essential to have a useful shader.
+I cannot reorganize the data in a tree yet, I need to implement it as soon as possible.
+
+#### Goals for tomorrow
+- completely finish the vertex buffer data structure for vec3
+- Finish the matrix editor
+- The user must be able to reorganize the data tree

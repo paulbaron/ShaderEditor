@@ -9,6 +9,9 @@ Vec3BufferDataView::Vec3BufferDataView(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->presetComboBox->addItem("Cube vertices");
+    ui->presetComboBox->addItem("Plane vertices");
+
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->verticalHeader()->setStretchLastSection(false);
@@ -23,6 +26,8 @@ Vec3BufferDataView::Vec3BufferDataView(QWidget *parent) :
                      this, SLOT(deleteRow()));
     QObject::connect(ui->tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
                      this, SLOT(selectionChanged()));
+    QObject::connect(ui->loadPresetButton, SIGNAL(released()),
+                     this, SLOT(loadPreset()));
 }
 
 Vec3BufferDataView::~Vec3BufferDataView()
@@ -56,7 +61,63 @@ void Vec3BufferDataView::deleteRow()
 
 void Vec3BufferDataView::loadPreset()
 {
+    GlmVecTableModel<glm::vec3> *model = static_cast<GlmVecTableModel<glm::vec3>*>(ui->tableView->model());
+    glm::vec3 cube[8] =
+    {
+        glm::vec3(-0.5, 0.5, 0.5),
+        glm::vec3(-0.5, 0.5, -0.5),
+        glm::vec3(0.5, 0.5, -0.5),
+        glm::vec3(0.5, 0.5, 0.5),
+        glm::vec3(-0.5, -0.5, 0.5),
+        glm::vec3(-0.5, -0.5, -0.5),
+        glm::vec3(0.5, -0.5, -0.5),
+        glm::vec3(0.5, -0.5, 0.5),
+    };
 
+    model->removeRows(0, model->rowCount());
+    switch (ui->presetComboBox->currentIndex())
+    {
+    case 0:
+        model->appendRow(cube[0]);
+        model->appendRow(cube[1]);
+        model->appendRow(cube[2]);
+        model->appendRow(cube[3]);
+
+        model->appendRow(cube[4]);
+        model->appendRow(cube[5]);
+        model->appendRow(cube[6]);
+        model->appendRow(cube[7]);
+
+        model->appendRow(cube[0]);
+        model->appendRow(cube[3]);
+        model->appendRow(cube[7]);
+        model->appendRow(cube[4]);
+
+        model->appendRow(cube[1]);
+        model->appendRow(cube[2]);
+        model->appendRow(cube[6]);
+        model->appendRow(cube[5]);
+
+        model->appendRow(cube[1]);
+        model->appendRow(cube[0]);
+        model->appendRow(cube[4]);
+        model->appendRow(cube[5]);
+
+        model->appendRow(cube[2]);
+        model->appendRow(cube[3]);
+        model->appendRow(cube[7]);
+        model->appendRow(cube[6]);
+        break;
+    case 1:
+        model->appendRow(glm::vec3(-1, -1, 0));
+        model->appendRow(glm::vec3(-1, 1, 0));
+        model->appendRow(glm::vec3(1, 1, 0));
+        model->appendRow(glm::vec3(1, -1, 0));
+        break;
+    default:
+        assert(!"Preset not implemented");
+        break;
+    }
 }
 
 void Vec3BufferDataView::valueChanged()

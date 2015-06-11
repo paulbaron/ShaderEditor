@@ -12,18 +12,14 @@ public:
     GlmVecTableModel(QObject *parent = 0) :
         QAbstractTableModel(parent)
     {
-        _buffer.push_back(GlmVec(0));
-        _buffer.push_back(GlmVec(1));
-        _buffer.push_back(GlmVec(2));
-        _buffer.push_back(GlmVec(3));
     }
 
-    int rowCount(const QModelIndex &parent) const
+    int rowCount(const QModelIndex &parent = QModelIndex()) const
     {
         return (_buffer.size());
     }
 
-    int columnCount(const QModelIndex &parent) const
+    int columnCount(const QModelIndex &parent = QModelIndex()) const
     {
         return (GlmVec().length());
     }
@@ -66,6 +62,14 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role)
     {
         _buffer[index.row()][index.column()] = value.toFloat();
+        return (true);
+    }
+
+    void appendRow(GlmVec const &vec)
+    {
+        beginInsertRows(QModelIndex(), _buffer.size(), _buffer.size());
+        _buffer.push_back(vec);
+        endInsertRows();
     }
 
     Qt::ItemFlags flags(const QModelIndex &index) const
@@ -76,7 +80,7 @@ public:
         return (QAbstractItemModel::flags(index) | Qt::ItemIsEditable);
     }
 
-    bool insertRows(int row, int count, const QModelIndex &parent)
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex())
     {
         beginInsertRows(parent, row, row + count - 1);
         for (int i = 0; i < count; ++i)
@@ -86,7 +90,7 @@ public:
         endInsertRows();
     }
 
-    bool removeRows(int row, int count, const QModelIndex &parent)
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex())
     {
         beginRemoveRows(parent, row, row + count - 1);
         for (int i = 0; i < count; ++i)

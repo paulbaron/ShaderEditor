@@ -14,7 +14,7 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 {
     QDoubleSpinBox *editor = new QDoubleSpinBox(parent);
     editor->setFrame(false);
-    editor->setMinimum(std::numeric_limits<float>::min());
+    editor->setMinimum(-std::numeric_limits<float>::max());
     editor->setMaximum(std::numeric_limits<float>::max());
     editor->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
 
