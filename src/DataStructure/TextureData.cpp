@@ -33,7 +33,7 @@ static GLenum textureFormatTable[][3] =
 TextureData::TextureData()
 {
     _type = DATA_TEXTURE;
-    _view = new TextureDataView();
+    _view = new TextureDataView(this);
     // Set the default texture parameters
     glGenTextures(1, &_id);
     _format = GL_RGBA8;

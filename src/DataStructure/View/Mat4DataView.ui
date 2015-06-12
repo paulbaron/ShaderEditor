@@ -45,9 +45,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <layout class="QVBoxLayout" name="verticalLayout_2"/>
+       <layout class="QVBoxLayout" name="editorLayout"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="invertCheckBox">
+     <property name="text">
+      <string>Invert Matrix</string>
+     </property>
     </widget>
    </item>
    <item>

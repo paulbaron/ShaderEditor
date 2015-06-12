@@ -1,10 +1,11 @@
 #include "ContainerData.hh"
 #include "DataStructureManager.hh"
 #include "View/ContainerView.hh"
+#include "ui_ContainerView.h"
 
-ContainerData::ContainerData()
+ContainerData::ContainerData(bool &addSon, bool &removeSon)
 {
-    _view = new ContainerView;
+    _view = new ContainerView(addSon, removeSon);
 }
 
 ContainerData::~ContainerData()

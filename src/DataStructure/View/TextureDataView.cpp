@@ -4,7 +4,7 @@
 #include <QErrorMessage>
 #include <assert.h>
 
-TextureDataView::TextureDataView(QWidget *parent) :
+TextureDataView::TextureDataView(AbstractData *data, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TextureDataView)
 {
@@ -43,6 +43,9 @@ TextureDataView::TextureDataView(QWidget *parent) :
     ui->minFilter->addItems(_filterModes);
     ui->horizontalWrap->addItems(_wrapModes);
     ui->verticalWrap->addItems(_wrapModes);
+
+    QObject::connect(ui->saveChanges, SIGNAL(released()),
+                     data, SLOT(saveChanges()));
 }
 
 TextureDataView::~TextureDataView()

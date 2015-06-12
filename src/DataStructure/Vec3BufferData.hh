@@ -14,6 +14,7 @@ public slots:
     void saveChanges();
 
 private:
+    int _count;
     QOpenGLBuffer _vbo;
 };
 

@@ -70,8 +70,8 @@ void RenderPassView::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
     _program->bind();
+    _vbo.bind();
     _program->enableAttributeArray(0);
     _program->setAttributeBuffer(0, GL_FLOAT, 0, 2);
-    _vbo.bind();
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }

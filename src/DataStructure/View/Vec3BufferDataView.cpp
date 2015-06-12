@@ -3,7 +3,7 @@
 #include "GlmVecTableModel.hh"
 #include "DoubleSpinBoxDelegate.hh"
 
-Vec3BufferDataView::Vec3BufferDataView(QWidget *parent) :
+Vec3BufferDataView::Vec3BufferDataView(AbstractData *data, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Vec3BufferDataView)
 {
@@ -28,11 +28,25 @@ Vec3BufferDataView::Vec3BufferDataView(QWidget *parent) :
                      this, SLOT(selectionChanged()));
     QObject::connect(ui->loadPresetButton, SIGNAL(released()),
                      this, SLOT(loadPreset()));
+    QObject::connect(ui->saveChanges, SIGNAL(released()),
+                     data, SLOT(saveChanges()));
 }
 
 Vec3BufferDataView::~Vec3BufferDataView()
 {
     delete ui;
+}
+
+glm::vec3 *Vec3BufferDataView::getData() const
+{
+    GlmVecTableModel<glm::vec3> *model = static_cast<GlmVecTableModel<glm::vec3>*>(ui->tableView->model());
+
+    return (model->getData());
+}
+
+int Vec3BufferDataView::getDataCount() const
+{
+    return (ui->tableView->model()->rowCount());
 }
 
 void Vec3BufferDataView::selectionChanged()
@@ -118,8 +132,4 @@ void Vec3BufferDataView::loadPreset()
         assert(!"Preset not implemented");
         break;
     }
-}
-
-void Vec3BufferDataView::valueChanged()
-{
 }

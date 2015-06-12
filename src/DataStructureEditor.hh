@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QStringList>
+#include <QModelIndex>
 
 namespace Ui {
 class DataStructureEditor;
@@ -25,6 +26,9 @@ private:
     Ui::DataStructureEditor *ui;
 
     QStringList _dataTypes;
+    QModelIndex _currentSelection;
+    bool _addSon;
+    bool _removeSon;
 };
 
 #endif // DATASTRUCTUREEDITOR_HH

@@ -8,7 +8,7 @@
 class ContainerData : public AbstractData
 {
 public:
-    ContainerData();
+    ContainerData(bool &addSon, bool &removeSon);
     ~ContainerData();
 
     void addSon(AbstractData *toAdd);

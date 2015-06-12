@@ -26,6 +26,24 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="selectedData">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>120</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Selected Data</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="dataViewGrid"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QComboBox" name="dataTypes"/>
    </item>
@@ -61,24 +79,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="selectedData">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>120</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Selected Data</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <layout class="QGridLayout" name="dataViewGrid"/>
-      </item>
-     </layout>
-    </widget>
    </item>
   </layout>
  </widget>

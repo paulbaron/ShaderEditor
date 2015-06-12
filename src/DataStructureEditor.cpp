@@ -15,6 +15,9 @@ DataStructureEditor::DataStructureEditor(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    _addSon = false;
+    _removeSon = false;
+
     _dataTypes.append("data container (empty data structure)");
 //    _dataTypes.append("float vertex buffer (draw call)");
 //    _dataTypes.append("vec2 vertex buffer (draw call)");
@@ -59,7 +62,7 @@ void DataStructureEditor::createData()
     switch (ui->dataTypes->currentIndex())
     {
     case 0:
-        dataToAdd = new ContainerData();
+        dataToAdd = new ContainerData(_addSon, _removeSon);
         break;
     case 1:
         dataToAdd = new Vec3BufferData();
@@ -104,22 +107,39 @@ void DataStructureEditor::selectionChanged()
 {
     if (ui->treeWidget->currentItem() != NULL)
     {
-        ui->deleteData->setEnabled(true);
-        AbstractData *oldCurrent = DataStructureManager::getManager()->getCurrent();
-        if (oldCurrent)
+        if (_addSon)
         {
-            QLayoutItem *item = ui->dataViewGrid->takeAt(0);
-            item->widget()->setParent(NULL);
-            delete item;
+            _addSon = false;
+            ui->treeWidget->setCurrentIndex(_currentSelection);
         }
-        QString selectedName = ui->treeWidget->currentItem()->text(0);
-        AbstractData *current = DataStructureManager::getManager()->getData(selectedName);
-        DataStructureManager::getManager()->setCurrent(current);
-        if (current->getView() != NULL)
-            ui->dataViewGrid->addWidget(current->getView());
+        else if (_removeSon)
+        {
+            _removeSon = false;
+            ui->treeWidget->setCurrentIndex(_currentSelection);
+        }
+        else
+        {
+            _currentSelection = ui->treeWidget->currentIndex();
+            ui->deleteData->setEnabled(true);
+            AbstractData *oldCurrent = DataStructureManager::getManager()->getCurrent();
+            if (oldCurrent)
+            {
+                QLayoutItem *item = ui->dataViewGrid->takeAt(0);
+                item->widget()->setParent(NULL);
+                delete item;
+            }
+            QString selectedName = ui->treeWidget->currentItem()->text(0);
+            AbstractData *current = DataStructureManager::getManager()->getData(selectedName);
+            DataStructureManager::getManager()->setCurrent(current);
+            if (current->getView() != NULL)
+            {
+                ui->dataViewGrid->addWidget(current->getView());
+            }
+        }
     }
     else
     {
+        _currentSelection = ui->treeWidget->currentIndex();
         AbstractData *oldCurrent = DataStructureManager::getManager()->getCurrent();
         if (oldCurrent)
         {

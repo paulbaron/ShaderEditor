@@ -88,17 +88,25 @@ public:
             _buffer.insert(row, (GlmVec(0)));
         }
         endInsertRows();
+        return (true);
     }
 
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex())
     {
+        if (_buffer.size() == 0)
+            return (false);
         beginRemoveRows(parent, row, row + count - 1);
         for (int i = 0; i < count; ++i)
         {
             _buffer.removeAt(row);
         }
         endRemoveRows();
-        emit layoutChanged();
+        return (true);
+    }
+
+    GlmVec *getData()
+    {
+        return (_buffer.data());
     }
 
 private:

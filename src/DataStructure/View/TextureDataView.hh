@@ -5,6 +5,8 @@
 #include <QOpenGLContext>
 #include <QListWidgetItem>
 
+#include "../AbstractData.hh"
+
 namespace Ui {
 class TextureDataView;
 }
@@ -14,7 +16,7 @@ class TextureDataView : public QWidget
     Q_OBJECT
 
 public:
-    explicit TextureDataView(QWidget *parent = 0);
+    explicit TextureDataView(AbstractData *data, QWidget *parent = 0);
     ~TextureDataView();
 
     Ui::TextureDataView *getUi() const { return (ui); }

@@ -140,3 +140,13 @@ I cannot reorganize the data in a tree yet, I need to implement it as soon as po
 - completely finish the vertex buffer data structure for vec3
 - Finish the matrix editor
 - The user must be able to reorganize the data tree
+
+## 11 june 2015
+I have completely finished the vertex buffer data structure for the vec3 and improved the marix editor
+
+#### Goals for tomorrow
+- Finish the matrix editor
+- The user must be able to reorganize the data tree
+
+## 12 june 2015
+I have completely finished the matrix editor.
