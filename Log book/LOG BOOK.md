@@ -142,6 +142,8 @@ I cannot reorganize the data in a tree yet, I need to implement it as soon as po
 - The user must be able to reorganize the data tree
 
 ## 11 june 2015
+
+#### Done today
 I have completely finished the vertex buffer data structure for the vec3 and improved the marix editor
 
 #### Goals for tomorrow
@@ -149,4 +151,9 @@ I have completely finished the vertex buffer data structure for the vec3 and imp
 - The user must be able to reorganize the data tree
 
 ## 12 june 2015
-I have completely finished the matrix editor.
+
+#### Done today
+I have completely finished the matrix editor. I have alost finished to implement the data tree. Still some bugs to correct, that might take some time.
+
+#### Goals for tomorrow
+- The user must be able to reorganize the data tree

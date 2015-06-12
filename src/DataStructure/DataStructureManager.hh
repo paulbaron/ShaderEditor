@@ -15,6 +15,7 @@ public:
     void setCurrentNull();
     AbstractData *getCurrent() const;
     void removeCurrent();
+    void removeData(AbstractData *toRm);
 
     AbstractData *getData(QString name);
 

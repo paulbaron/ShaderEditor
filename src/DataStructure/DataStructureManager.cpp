@@ -32,12 +32,18 @@ AbstractData *DataStructureManager::getCurrent() const
 
 void DataStructureManager::removeCurrent()
 {
+    removeData(_currentSelection);
+    _currentSelection = NULL;
+}
+
+void DataStructureManager::removeData(AbstractData *toRm)
+{
     QList<AbstractData*>::iterator it = _dataStructures.begin();
     bool removed = false;
 
     while (it != _dataStructures.end() && removed == false)
     {
-        if (_currentSelection == *it)
+        if (toRm == *it)
         {
             _dataStructures.erase(it);
             removed = true;
@@ -46,14 +52,13 @@ void DataStructureManager::removeCurrent()
         {
             ContainerData *container = static_cast<ContainerData*>(*it);
 
-            if (container->removeSon(_currentSelection))
+            if (container->removeSon(toRm))
             {
                 removed = true;
             }
         }
         ++it;
     }
-    _currentSelection = NULL;
 }
 
 AbstractData *DataStructureManager::getData(QString name)

@@ -110,6 +110,24 @@ void DataStructureEditor::selectionChanged()
         if (_addSon)
         {
             _addSon = false;
+
+            // Change hierarchy in data structure
+            AbstractData *selected = DataStructureManager::getManager()->getData(ui->treeWidget->currentItem()->text(0));
+            ContainerData *container = static_cast<ContainerData*>(DataStructureManager::getManager()->getCurrent());
+
+            DataStructureManager::getManager()->removeData(selected);
+            container->addSon(selected);
+
+            // Change hierarchy in tree view
+            QModelIndex idx = ui->treeWidget->currentIndex();
+            QTreeWidgetItem *toMove = ui->treeWidget->itemAt(idx.row(), idx.column());
+            if (toMove->parent())
+                toMove = toMove->parent()->takeChild(toMove->parent()->indexOfChild(toMove));
+            else
+                toMove = ui->treeWidget->takeTopLevelItem(idx.row());
+            QTreeWidgetItem *father = ui->treeWidget->itemAt(_currentSelection.row(), _currentSelection.column());
+
+            father->addChild(toMove);
             ui->treeWidget->setCurrentIndex(_currentSelection);
         }
         else if (_removeSon)
