@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTUREMANAGER_H
 #define DATASTRUCTUREMANAGER_H
 
-#include "AbstractData.hh"
+#include "SInstance.hh"
 
 #include <QList>
 
@@ -10,22 +10,22 @@ class DataStructureManager
 public:
     static DataStructureManager *getManager();
 
-    void addData(AbstractData *toAdd);
-    void setCurrent(AbstractData *current);
+    void addData(SInstance *toAdd);
+    void setCurrent(SInstance *current);
     void setCurrentNull();
-    AbstractData *getCurrent() const;
+    SInstance *getCurrent() const;
     void removeCurrent();
-    void removeData(AbstractData *toRm);
+    void removeData(SInstance *toRm);
 
-    AbstractData *getData(QString name);
+    SInstance *getData(QString name);
 
 private:
     DataStructureManager();
 
     static DataStructureManager *_manager;
 
-    QList<AbstractData*> _dataStructures;
-    AbstractData *_currentSelection;
+    SContainerInstance _root;
+    SInstance *_currentSelection;
 };
 
 #endif // DATASTRUCTUREMANAGER_H

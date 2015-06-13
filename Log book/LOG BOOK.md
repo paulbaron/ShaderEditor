@@ -157,3 +157,40 @@ I have completely finished the matrix editor. I have alost finished to implement
 
 #### Goals for tomorrow
 - The user must be able to reorganize the data tree
+
+## 13 june 2015
+
+#### Thought
+I must now think about how to instantiate the datas without copying them.
+I have remove the container class and handle a container as a SInstance.
+I have created a structure SInstance that has a pointer to the parent container and either a pointer to the data or a list of other instances (it is either a data or a list of datas).
+I will then have:
+
+enum EInstanceType
+{
+	DATA_INSTANCE,
+	CONTAINER_INSTANCE
+};
+
+struct SInstance
+{
+	EInstanceType type;
+	SDataInstance *parent;
+};
+
+struct SContainerInstance : public SInstance
+{
+	QList<SInstance*> instances;
+	QString containerName;
+};
+
+struct SDataInstance : public SInstance
+{
+	AbstractData *data;
+};
+
+This way, we can change the container and the shape of the tree in the render pass, but if we modify the data in the data editor, it will also be taken into account.
+
+#### Done today
+It is now possible to reorganize the data tree.
+The data structures have been changed to allow easy instantiation and copy.

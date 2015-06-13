@@ -8,7 +8,7 @@ AbstractData::AbstractData()
     do
     {
         _name = "Data_" + QString::number(id++);
-    } while (DataStructureManager::getManager()->getData(_name) != NULL);
+    } while (DataStructureManager::getManager()->getData(_name).data != NULL);
     _view = NULL;
 }
 

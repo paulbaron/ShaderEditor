@@ -1,34 +1,25 @@
 #include "ContainerView.hh"
 #include "ui_ContainerView.h"
 
-ContainerView::ContainerView(bool &addSon, bool &removeSon, QWidget *parent) :
+#include "DataStructureEditor.hh"
+
+ContainerView::ContainerView(DataStructureEditor *editor, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ContainerView),
-    _addSon(addSon),
-    _removeSon(removeSon)
+    ui(new Ui::ContainerView)
 {
     ui->setupUi(this);
 
     QObject::connect(ui->addSon, SIGNAL(released()),
-                     this, SLOT(setAddSon()));
+                     editor, SLOT(setAddSon()));
+    QObject::connect(editor, SIGNAL(sonAdded(bool)),
+                     ui->addSon, SLOT(setChecked(bool)));
     QObject::connect(ui->removeSon, SIGNAL(released()),
-                     this, SLOT(setRemoveSon()));
-
+                     editor, SLOT(setRemoveSon()));
+    QObject::connect(editor, SIGNAL(sonRemoved(bool)),
+                     ui->removeSon, SLOT(setChecked(bool)));
 }
 
 ContainerView::~ContainerView()
 {
     delete ui;
-}
-
-void ContainerView::setAddSon()
-{
-    _addSon = !_addSon;
-    ui->addSon->setChecked(_addSon);
-}
-
-void ContainerView::setRemoveSon()
-{
-    _removeSon = !_removeSon;
-    ui->addSon->setChecked(_removeSon);
 }

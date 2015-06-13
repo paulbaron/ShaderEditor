@@ -1,5 +1,4 @@
 #include "DataStructureManager.hh"
-#include "ContainerData.hh"
 
 DataStructureManager *DataStructureManager::_manager = NULL;
 
@@ -10,12 +9,13 @@ DataStructureManager *DataStructureManager::getManager()
     return (_manager);
 }
 
-void DataStructureManager::addData(AbstractData *toAdd)
+void DataStructureManager::addData(SInstance *toAdd)
 {
-    _dataStructures.append(toAdd);
+    _root.instances.push_back(toAdd);
+    toAdd->parent = &_root;
 }
 
-void DataStructureManager::setCurrent(AbstractData *current)
+void DataStructureManager::setCurrent(SInstance *current)
 {
     _currentSelection = current;
 }
@@ -25,7 +25,7 @@ void DataStructureManager::setCurrentNull()
     _currentSelection = NULL;
 }
 
-AbstractData *DataStructureManager::getCurrent() const
+SDataInstance *DataStructureManager::getCurrent() const
 {
     return (_currentSelection);
 }
@@ -33,58 +33,17 @@ AbstractData *DataStructureManager::getCurrent() const
 void DataStructureManager::removeCurrent()
 {
     removeData(_currentSelection);
-    _currentSelection = NULL;
+    setCurrentNull();
 }
 
-void DataStructureManager::removeData(AbstractData *toRm)
+void DataStructureManager::removeData(SInstance *toRm)
 {
-    QList<AbstractData*>::iterator it = _dataStructures.begin();
-    bool removed = false;
-
-    while (it != _dataStructures.end() && removed == false)
-    {
-        if (toRm == *it)
-        {
-            _dataStructures.erase(it);
-            removed = true;
-        }
-        else if ((*it)->getType() == AbstractData::DATA_CONTAINER)
-        {
-            ContainerData *container = static_cast<ContainerData*>(*it);
-
-            if (container->removeSon(toRm))
-            {
-                removed = true;
-            }
-        }
-        ++it;
-    }
+    return (_root.removeSon(toRm));
 }
 
-AbstractData *DataStructureManager::getData(QString name)
+SInstance *DataStructureManager::getData(QString name)
 {
-    QList<AbstractData*>::const_iterator it = _dataStructures.begin();
-
-    while (it != _dataStructures.end())
-    {
-        if ((*it)->getName() == name)
-        {
-            return (*it);
-        }
-        else if ((*it)->getType() == AbstractData::DATA_CONTAINER)
-        {
-            ContainerData *container = static_cast<ContainerData*>(*it);
-
-            AbstractData *retData = container->getData(name);
-
-            if (retData != NULL)
-            {
-                return (retData);
-            }
-        }
-        ++it;
-    }
-    return (NULL);
+    return (_root.getSon(name));
 }
 
 DataStructureManager::DataStructureManager()

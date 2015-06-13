@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QObject>
 
+class ContainerData;
+
 class AbstractData : public QObject
 {
     Q_OBJECT
@@ -16,8 +18,7 @@ public:
         DATA_MAT3,
         DATA_MAT4,
         DATA_TEXTURE,
-        DATA_VERTEX_BUFFER,
-        DATA_CONTAINER
+        DATA_VERTEX_BUFFER
     };
 
     AbstractData();
@@ -32,7 +33,6 @@ public slots:
     virtual void saveChanges() = 0;
 
 protected:
-    AbstractData *_parent;
     QString _name;
     QWidget *_view;
     EDataTypes _type;

@@ -2,7 +2,6 @@
 #include "ui_DataStructureEditor.h"
 
 #include "DataStructure/DataStructureManager.hh"
-#include "DataStructure/ContainerData.hh"
 #include "DataStructure/Vec3BufferData.hh"
 #include "DataStructure/TextureData.hh"
 #include "DataStructure/Mat4Data.hh"
@@ -17,6 +16,9 @@ DataStructureEditor::DataStructureEditor(QWidget *parent) :
 
     _addSon = false;
     _removeSon = false;
+
+    _isAddingSon = false;
+    _isRemovingSon = false;
 
     _dataTypes.append("data container (empty data structure)");
 //    _dataTypes.append("float vertex buffer (draw call)");
@@ -57,21 +59,21 @@ DataStructureEditor::~DataStructureEditor()
 
 void DataStructureEditor::createData()
 {
-    AbstractData *dataToAdd;
+    SInstance *dataToAdd;
 
     switch (ui->dataTypes->currentIndex())
     {
     case 0:
-        dataToAdd = new ContainerData(_addSon, _removeSon);
+        dataToAdd = new SContainerInstance();
         break;
     case 1:
-        dataToAdd = new Vec3BufferData();
+        dataToAdd->data = new SDataInstance(new Vec3BufferData());
         break;
     case 2:
-        dataToAdd = new TextureData();
+        dataToAdd->data = new SDataInstance(new TextureData());
         break;
     case 3:
-        dataToAdd = new Mat4Data();
+        dataToAdd->data = new SDataInstance(new Mat4Data());
         break;
     default:
         assert(!"Not implemented yet!");
@@ -80,86 +82,130 @@ void DataStructureEditor::createData()
     DataStructureManager::getManager()->addData(dataToAdd);
     QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
 
-    item->setText(0, dataToAdd->getName());
+    item->setText(0, dataToAdd->data->getName());
     ui->treeWidget->addTopLevelItem(item);
 }
 
 void DataStructureEditor::deleteData()
 {
     // Remove widget
-    AbstractData *oldCurrent = DataStructureManager::getManager()->getCurrent();
-    if (oldCurrent)
-    {
-        QLayoutItem *item = ui->dataViewGrid->takeAt(0);
-        item->widget()->setParent(NULL);
-        delete item;
-    }
-    // Remove current
-    DataStructureManager::getManager()->removeCurrent();
-    // Remove from tree
-    QModelIndex idx = ui->treeWidget->currentIndex();
-    QTreeWidgetItem *item = ui->treeWidget->takeTopLevelItem(idx.row());
-
+    QLayoutItem *item = ui->dataViewGrid->takeAt(0);
+    item->widget()->setParent(NULL);
     delete item;
+    // Remove current data
+    SDataInstance current = DataStructureManager::getManager()->getCurrent();
+    DataStructureManager::getManager()->removeCurrent();
+    delete current._data;
+    // Remove from tree view
+    QTreeWidgetItem *toRemove = ui->treeWidget->currentItem();
+    if (toRemove->parent())
+    {
+        toRemove = toRemove->parent()->takeChild(toRemove->parent()->indexOfChild(toRemove));
+    }
+    else
+    {
+        toRemove = ui->treeWidget->takeTopLevelItem(ui->treeWidget->indexOfTopLevelItem(toRemove));
+    }
+    delete toRemove;
 }
 
 void DataStructureEditor::selectionChanged()
 {
+    if (_isAddingSon || _isRemovingSon)
+        return;
     if (ui->treeWidget->currentItem() != NULL)
     {
         if (_addSon)
         {
-            _addSon = false;
+            _isAddingSon = true;
 
             // Change hierarchy in data structure
-            AbstractData *selected = DataStructureManager::getManager()->getData(ui->treeWidget->currentItem()->text(0));
-            ContainerData *container = static_cast<ContainerData*>(DataStructureManager::getManager()->getCurrent());
+            SDataInstance selected = DataStructureManager::getManager()->getData(ui->treeWidget->currentItem()->text(0));
+            ContainerData *container = static_cast<ContainerData*>(DataStructureManager::getManager()->getCurrent().data);
 
             DataStructureManager::getManager()->removeData(selected);
             container->addSon(selected);
 
             // Change hierarchy in tree view
             QModelIndex idx = ui->treeWidget->currentIndex();
-            QTreeWidgetItem *toMove = ui->treeWidget->itemAt(idx.row(), idx.column());
+            QTreeWidgetItem *toMove = ui->treeWidget->currentItem();
+
             if (toMove->parent())
                 toMove = toMove->parent()->takeChild(toMove->parent()->indexOfChild(toMove));
             else
                 toMove = ui->treeWidget->takeTopLevelItem(idx.row());
-            QTreeWidgetItem *father = ui->treeWidget->itemAt(_currentSelection.row(), _currentSelection.column());
 
-            father->addChild(toMove);
-            ui->treeWidget->setCurrentIndex(_currentSelection);
+            _currentSelection->addChild(toMove);
+            ui->treeWidget->setCurrentItem(_currentSelection);
+
+            _addSon = false;
+            _isAddingSon = false;
+            emit sonAdded(false);
         }
         else if (_removeSon)
         {
+            _isRemovingSon = true;
+
+            QTreeWidgetItem *toMove = ui->treeWidget->currentItem();
+
+            if (toMove->parent() == _currentSelection)
+            {
+                // Change in data structure
+                SDataInstance toMoveData = DataStructureManager::getManager()->getData(toMove->text(0));
+                SDataInstance *father = toMoveData.container;
+                // Remove it from manager and put it one level higher
+                DataStructureManager::getManager()->removeData(toMoveData);
+                if (father->getContainer() != NULL)
+                {
+                    father->getContainer()->addSon(toMoveData);
+                }
+                else
+                {
+                    DataStructureManager::getManager()->addData(toMoveData);
+                }
+
+                // Change it in the view
+                toMove = toMove->parent()->takeChild(_currentSelection->indexOfChild(toMove));
+                if (_currentSelection->parent())
+                {
+                    _currentSelection->parent()->addChild(toMove);
+                }
+                else
+                {
+                    ui->treeWidget->addTopLevelItem(toMove);
+                }
+            }
+            ui->treeWidget->setCurrentItem(_currentSelection);
+
             _removeSon = false;
-            ui->treeWidget->setCurrentIndex(_currentSelection);
+            _isRemovingSon = false;
+            emit sonRemoved(false);
         }
         else
         {
-            _currentSelection = ui->treeWidget->currentIndex();
+            _currentSelection = ui->treeWidget->currentItem();
             ui->deleteData->setEnabled(true);
-            AbstractData *oldCurrent = DataStructureManager::getManager()->getCurrent();
-            if (oldCurrent)
+            SDataInstance oldCurrent = DataStructureManager::getManager()->getCurrent();
+            if (oldCurrent._data)
             {
                 QLayoutItem *item = ui->dataViewGrid->takeAt(0);
                 item->widget()->setParent(NULL);
                 delete item;
             }
             QString selectedName = ui->treeWidget->currentItem()->text(0);
-            AbstractData *current = DataStructureManager::getManager()->getData(selectedName);
+            SDataInstance current = DataStructureManager::getManager()->getData(selectedName);
             DataStructureManager::getManager()->setCurrent(current);
-            if (current->getView() != NULL)
+            if (current._data->getView() != NULL)
             {
-                ui->dataViewGrid->addWidget(current->getView());
+                ui->dataViewGrid->addWidget(current._data->getView());
             }
         }
     }
     else
     {
-        _currentSelection = ui->treeWidget->currentIndex();
-        AbstractData *oldCurrent = DataStructureManager::getManager()->getCurrent();
-        if (oldCurrent)
+        _currentSelection = ui->treeWidget->currentItem();
+        SDataInstance oldCurrent = DataStructureManager::getManager()->getCurrent();
+        if (oldCurrent._data)
         {
             QLayoutItem *item = ui->dataViewGrid->takeAt(0);
             item->widget()->setParent(NULL);
@@ -169,3 +215,14 @@ void DataStructureEditor::selectionChanged()
         ui->deleteData->setEnabled(false);
     }
 }
+
+void DataStructureEditor::setAddSon()
+{
+    _addSon = !_addSon;
+}
+
+void DataStructureEditor::setRemoveSon()
+{
+    _removeSon = !_removeSon;
+}
+

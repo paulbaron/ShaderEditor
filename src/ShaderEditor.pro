@@ -44,7 +44,6 @@ HEADERS += \
     DataStructure/Mat3Data.hh \
     DataStructure/Mat4Data.hh \
     DataStructure/View/TextureDataView.hh \
-    DataStructure/ContainerData.hh \
     DataStructure/View/ContainerView.hh \
     DataStructure/Vec3BufferData.hh \
     DataStructure/View/Vec3BufferDataView.hh \
@@ -53,7 +52,8 @@ HEADERS += \
     DataStructure/View/DoubleSpinBoxDelegate.hh \
     DataStructure/View/MatPerspectiveView.hh \
     DataStructure/View/Mat3DTransformView.hh \
-    DataStructure/View/Mat3DLookAtView.hh
+    DataStructure/View/Mat3DLookAtView.hh \
+    DataStructure/SInstance.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -75,7 +75,6 @@ SOURCES += \
     DataStructure/Mat3Data.cpp \
     DataStructure/Mat4Data.cpp \
     DataStructure/View/TextureDataView.cpp \
-    DataStructure/ContainerData.cpp \
     DataStructure/AbstractData.cpp \
     DataStructure/View/ContainerView.cpp \
     DataStructure/Vec3BufferData.cpp \
@@ -84,4 +83,5 @@ SOURCES += \
     DataStructure/View/DoubleSpinBoxDelegate.cpp \
     DataStructure/View/MatPerspectiveView.cpp \
     DataStructure/View/Mat3DTransformView.cpp \
-    DataStructure/View/Mat3DLookAtView.cpp
+    DataStructure/View/Mat3DLookAtView.cpp \
+    DataStructure/SInstance.cpp

@@ -3,6 +3,7 @@
 
 Vec3BufferData::Vec3BufferData()
 {
+    _type = DATA_VERTEX_BUFFER;
     _view = new Vec3BufferDataView(this);
     bool create = _vbo.create();
     assert(create);

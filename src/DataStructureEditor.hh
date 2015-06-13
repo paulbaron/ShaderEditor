@@ -5,6 +5,8 @@
 #include <QStringList>
 #include <QModelIndex>
 
+#include <QTreeWidgetItem>
+
 namespace Ui {
 class DataStructureEditor;
 }
@@ -22,13 +24,23 @@ public slots:
     void deleteData();
     void selectionChanged();
 
+    void setAddSon();
+    void setRemoveSon();
+
+signals:
+    void sonAdded(bool checked);
+    void sonRemoved(bool checked);
+
 private:
     Ui::DataStructureEditor *ui;
 
     QStringList _dataTypes;
-    QModelIndex _currentSelection;
+    QTreeWidgetItem *_currentSelection;
     bool _addSon;
     bool _removeSon;
+
+    bool _isAddingSon;
+    bool _isRemovingSon;
 };
 
 #endif // DATASTRUCTUREEDITOR_HH

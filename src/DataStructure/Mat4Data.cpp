@@ -13,6 +13,7 @@
 
 Mat4Data::Mat4Data()
 {
+    _type = DATA_MAT4;
     _view = new Mat4DataView(this);
 }
 
