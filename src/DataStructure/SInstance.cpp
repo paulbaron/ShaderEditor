@@ -98,6 +98,33 @@ QString SContainerInstance::getName() const
     return (_name);
 }
 
+SInstance *SContainerInstance::copy() const
+{
+    SContainerInstance *ret = new SContainerInstance;
+    QList<SInstance*>::const_iterator it = _instances.begin();
+
+    while (it != _instances.end())
+    {
+        ret->addSon((*it)->copy());
+        ++it;
+    }
+    return (ret);
+}
+
+QTreeWidgetItem *SContainerInstance::getTreeItem() const
+{
+    QTreeWidgetItem *item = new QTreeWidgetItem;
+    QList<SInstance*>::const_iterator it = _instances.begin();
+
+    item->setText(0, getName());
+    while (it != _instances.end())
+    {
+        item->addChild((*it)->getTreeItem());
+        ++it;
+    }
+    return (item);
+}
+
 SDataInstance::SDataInstance(AbstractData *data)
 {
     _type = DATA_INSTANCE;
@@ -117,4 +144,17 @@ void SDataInstance::destroy()
 QString SDataInstance::getName() const
 {
     return (_data->getName());
+}
+
+SInstance *SDataInstance::copy() const
+{
+    return (new SDataInstance(_data));
+}
+
+QTreeWidgetItem *SDataInstance::getTreeItem() const
+{
+    QTreeWidgetItem *item = new QTreeWidgetItem;
+
+    item->setText(0, getName());
+    return (item);
 }

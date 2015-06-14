@@ -52,6 +52,11 @@ TextureData::~TextureData()
     glDeleteTextures(1, &_id);
 }
 
+GLenum TextureData::getInternalFormat() const
+{
+    return (_format);
+}
+
 void TextureData::saveChanges()
 {
     TextureDataView *texView = static_cast<TextureDataView*>(_view);

@@ -10,6 +10,8 @@ public:
     TextureData();
     ~TextureData();
 
+    GLenum getInternalFormat() const;
+
 public slots:
     void saveChanges();
 

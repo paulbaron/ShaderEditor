@@ -1,8 +1,9 @@
-#ifndef SDATAINSTANCE_H
+#ifndef SINSTANCE_H
 #define SINSTANCE_H
 
 #include <QString>
 #include <QList>
+#include <QTreeWidgetItem>
 
 class AbstractData;
 
@@ -24,6 +25,8 @@ public:
 
     virtual void destroy() = 0;
     virtual QString getName() const = 0;
+    virtual SInstance *copy() const = 0;
+    virtual QTreeWidgetItem *getTreeItem() const = 0;
 
 protected:
     SContainerInstance *_parent;
@@ -40,6 +43,8 @@ public:
 
     virtual void destroy();
     virtual QString getName() const;
+    virtual SInstance *copy() const;
+    virtual QTreeWidgetItem *getTreeItem() const;
 
 private:
     QList<SInstance*> _instances;
@@ -54,6 +59,8 @@ public:
 
     virtual void destroy();
     virtual QString getName() const;
+    virtual SInstance *copy() const;
+    virtual QTreeWidgetItem *getTreeItem() const;
 
 private:
     AbstractData *_data;

@@ -4,9 +4,12 @@
 #include "SInstance.hh"
 
 #include <QList>
+#include <QObject>
 
-class DataStructureManager
+class DataStructureManager : public QObject
 {
+    Q_OBJECT
+
 public:
     static DataStructureManager *getManager();
 
@@ -18,6 +21,9 @@ public:
     bool removeData(SInstance *toRm);
 
     SInstance *getData(QString name);
+
+signals:
+    void currentSelectionChanged(SInstance *current);
 
 private:
     DataStructureManager();

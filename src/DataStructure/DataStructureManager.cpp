@@ -17,11 +17,13 @@ void DataStructureManager::addData(SInstance *toAdd)
 void DataStructureManager::setCurrent(SInstance *current)
 {
     _currentSelection = current;
+    emit currentSelectionChanged(_currentSelection);
 }
 
 void DataStructureManager::setCurrentNull()
 {
     _currentSelection = NULL;
+    emit currentSelectionChanged(_currentSelection);
 }
 
 SInstance *DataStructureManager::getCurrent() const

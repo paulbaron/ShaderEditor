@@ -162,8 +162,9 @@ I have completely finished the matrix editor. I have alost finished to implement
 
 #### Thought
 I must now think about how to instantiate the datas without copying them.
-I have remove the container class and handle a container as a SInstance.
+I have removed the container class and handle a container as a SInstance.
 I have created a structure SInstance that has a pointer to the parent container and either a pointer to the data or a list of other instances (it is either a data or a list of datas).
+This way, the data are never copied but the containers are always copied.
 I will then have:
 
 ```C++
