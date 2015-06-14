@@ -166,6 +166,7 @@ I have remove the container class and handle a container as a SInstance.
 I have created a structure SInstance that has a pointer to the parent container and either a pointer to the data or a list of other instances (it is either a data or a list of datas).
 I will then have:
 
+```C++
 enum EInstanceType
 {
 	DATA_INSTANCE,
@@ -188,6 +189,7 @@ struct SDataInstance : public SInstance
 {
 	AbstractData *data;
 };
+```
 
 This way, we can change the container and the shape of the tree in the render pass, but if we modify the data in the data editor, it will also be taken into account.
 
