@@ -15,7 +15,7 @@ public:
     void setCurrentNull();
     SInstance *getCurrent() const;
     void removeCurrent();
-    void removeData(SInstance *toRm);
+    bool removeData(SInstance *toRm);
 
     SInstance *getData(QString name);
 

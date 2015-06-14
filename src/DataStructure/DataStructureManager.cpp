@@ -11,8 +11,7 @@ DataStructureManager *DataStructureManager::getManager()
 
 void DataStructureManager::addData(SInstance *toAdd)
 {
-    _root.instances.push_back(toAdd);
-    toAdd->parent = &_root;
+    _root.addSon(toAdd);
 }
 
 void DataStructureManager::setCurrent(SInstance *current)
@@ -25,7 +24,7 @@ void DataStructureManager::setCurrentNull()
     _currentSelection = NULL;
 }
 
-SDataInstance *DataStructureManager::getCurrent() const
+SInstance *DataStructureManager::getCurrent() const
 {
     return (_currentSelection);
 }
@@ -36,7 +35,7 @@ void DataStructureManager::removeCurrent()
     setCurrentNull();
 }
 
-void DataStructureManager::removeData(SInstance *toRm)
+bool DataStructureManager::removeData(SInstance *toRm)
 {
     return (_root.removeSon(toRm));
 }

@@ -2,7 +2,6 @@
 #define CONTAINERVIEW_HH
 
 #include <QWidget>
-#include "../ContainerData.hh"
 
 namespace Ui {
 class ContainerView;

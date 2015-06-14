@@ -1,5 +1,6 @@
 #include "SInstance.hh"
 #include "AbstractData.hh"
+#include "View/ContainerView.hh"
 
 SInstance::SInstance()
 {
@@ -38,10 +39,11 @@ bool SContainerInstance::removeSon(SInstance *toRm)
     {
         if (*it == toRm)
         {
+            (*it)->_parent = NULL;
             it = _instances.erase(it);
             return (true);
         }
-        else if ((*it)->type == CONTAINER_INSTANCE)
+        else if ((*it)->getType() == CONTAINER_INSTANCE)
         {
             SContainerInstance *container = static_cast<SContainerInstance*>(*it);
 
@@ -61,31 +63,18 @@ SInstance *SContainerInstance::getSon(QString sonName) const
 
     while (it != _instances.end())
     {
-        if ((*it)->type == DATA_INSTANCE)
+        if ((*it)->getName() == sonName)
         {
-            SDataInstance *son = static_cast<SDataInstance*>(*it);
-
-            if (son->_data->getName() == sonName)
-            {
-                return (son);
-            }
+            return (*it);
         }
-        else if ((*it)->type == CONTAINER_INSTANCE)
+        else if ((*it)->getType() == CONTAINER_INSTANCE)
         {
             SContainerInstance *son = static_cast<SContainerInstance*>(*it);
+            SInstance *ret = son->getSon(sonName);
 
-            if (son->_name == sonName)
+            if (ret != NULL)
             {
-                return (son);
-            }
-            else
-            {
-                SInstance ret = son->getSon(sonName);
-
-                if (ret != NULL)
-                {
-                    return (ret);
-                }
+                return (ret);
             }
         }
         ++it;
@@ -93,8 +82,39 @@ SInstance *SContainerInstance::getSon(QString sonName) const
     return (NULL);
 }
 
+void SContainerInstance::destroy()
+{
+    QList<SInstance*>::iterator it = _instances.begin();
+
+    while (it != _instances.end())
+    {
+        (*it)->destroy();
+        ++it;
+    }
+}
+
+QString SContainerInstance::getName() const
+{
+    return (_name);
+}
+
 SDataInstance::SDataInstance(AbstractData *data)
 {
     _type = DATA_INSTANCE;
     _data = data;
+}
+
+AbstractData *SDataInstance::getData() const
+{
+    return (_data);
+}
+
+void SDataInstance::destroy()
+{
+    delete _data;
+}
+
+QString SDataInstance::getName() const
+{
+    return (_data->getName());
 }

@@ -16,15 +16,17 @@ class SContainerInstance;
 
 class SInstance
 {
+    friend class SContainerInstance;
 public:
     SInstance();
     SContainerInstance *getParent() const;
     EInstanceType getType() const;
 
+    virtual void destroy() = 0;
+    virtual QString getName() const = 0;
+
 protected:
     SContainerInstance *_parent;
-
-private:
     EInstanceType _type;
 };
 
@@ -33,19 +35,25 @@ class SContainerInstance : public SInstance
 public:
     SContainerInstance();
     void addSon(SInstance *toAdd);
-    bool removeSon(SIntance *toRm);
+    bool removeSon(SInstance *toRm);
     SInstance *getSon(QString sonName) const;
+
+    virtual void destroy();
+    virtual QString getName() const;
 
 private:
     QList<SInstance*> _instances;
     QString _name;
 };
 
-struct SDataInstance : public SInstance
+class SDataInstance : public SInstance
 {
 public:
     SDataInstance(AbstractData *data);
     AbstractData *getData() const;
+
+    virtual void destroy();
+    virtual QString getName() const;
 
 private:
     AbstractData *_data;

@@ -7,6 +7,8 @@
 
 #include <QTreeWidgetItem>
 
+class ContainerView;
+
 namespace Ui {
 class DataStructureEditor;
 }
@@ -33,6 +35,7 @@ signals:
 
 private:
     Ui::DataStructureEditor *ui;
+    ContainerView *_containerView;
 
     QStringList _dataTypes;
     QTreeWidgetItem *_currentSelection;

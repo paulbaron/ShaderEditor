@@ -1,6 +1,8 @@
 #include "DataStructureEditor.hh"
 #include "ui_DataStructureEditor.h"
 
+#include "DataStructure/View/ContainerView.hh"
+
 #include "DataStructure/DataStructureManager.hh"
 #include "DataStructure/Vec3BufferData.hh"
 #include "DataStructure/TextureData.hh"
@@ -13,6 +15,8 @@ DataStructureEditor::DataStructureEditor(QWidget *parent) :
     ui(new Ui::DataStructureEditor)
 {
     ui->setupUi(this);
+
+    _containerView = new ContainerView(this);
 
     _addSon = false;
     _removeSon = false;
@@ -67,13 +71,13 @@ void DataStructureEditor::createData()
         dataToAdd = new SContainerInstance();
         break;
     case 1:
-        dataToAdd->data = new SDataInstance(new Vec3BufferData());
+        dataToAdd = new SDataInstance(new Vec3BufferData());
         break;
     case 2:
-        dataToAdd->data = new SDataInstance(new TextureData());
+        dataToAdd = new SDataInstance(new TextureData());
         break;
     case 3:
-        dataToAdd->data = new SDataInstance(new Mat4Data());
+        dataToAdd = new SDataInstance(new Mat4Data());
         break;
     default:
         assert(!"Not implemented yet!");
@@ -82,7 +86,7 @@ void DataStructureEditor::createData()
     DataStructureManager::getManager()->addData(dataToAdd);
     QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
 
-    item->setText(0, dataToAdd->data->getName());
+    item->setText(0, dataToAdd->getName());
     ui->treeWidget->addTopLevelItem(item);
 }
 
@@ -93,9 +97,10 @@ void DataStructureEditor::deleteData()
     item->widget()->setParent(NULL);
     delete item;
     // Remove current data
-    SDataInstance current = DataStructureManager::getManager()->getCurrent();
+    SInstance *current = DataStructureManager::getManager()->getCurrent();
     DataStructureManager::getManager()->removeCurrent();
-    delete current._data;
+    current->destroy();
+    delete current;
     // Remove from tree view
     QTreeWidgetItem *toRemove = ui->treeWidget->currentItem();
     if (toRemove->parent())
@@ -115,13 +120,14 @@ void DataStructureEditor::selectionChanged()
         return;
     if (ui->treeWidget->currentItem() != NULL)
     {
-        if (_addSon)
+        if (_addSon) // We add a son to the container
         {
             _isAddingSon = true;
 
             // Change hierarchy in data structure
-            SDataInstance selected = DataStructureManager::getManager()->getData(ui->treeWidget->currentItem()->text(0));
-            ContainerData *container = static_cast<ContainerData*>(DataStructureManager::getManager()->getCurrent().data);
+            QString currentItemName = ui->treeWidget->currentItem()->text(0);
+            SInstance *selected = DataStructureManager::getManager()->getData(currentItemName);
+            SContainerInstance *container = static_cast<SContainerInstance*>(DataStructureManager::getManager()->getCurrent());
 
             DataStructureManager::getManager()->removeData(selected);
             container->addSon(selected);
@@ -142,7 +148,7 @@ void DataStructureEditor::selectionChanged()
             _isAddingSon = false;
             emit sonAdded(false);
         }
-        else if (_removeSon)
+        else if (_removeSon) // We remove a son from the container
         {
             _isRemovingSon = true;
 
@@ -151,18 +157,11 @@ void DataStructureEditor::selectionChanged()
             if (toMove->parent() == _currentSelection)
             {
                 // Change in data structure
-                SDataInstance toMoveData = DataStructureManager::getManager()->getData(toMove->text(0));
-                SDataInstance *father = toMoveData.container;
+                SInstance *toMoveData = DataStructureManager::getManager()->getData(toMove->text(0));
+                SContainerInstance *father = toMoveData->getParent();
                 // Remove it from manager and put it one level higher
-                DataStructureManager::getManager()->removeData(toMoveData);
-                if (father->getContainer() != NULL)
-                {
-                    father->getContainer()->addSon(toMoveData);
-                }
-                else
-                {
-                    DataStructureManager::getManager()->addData(toMoveData);
-                }
+                father->removeSon(toMoveData);
+                father->getParent()->addSon(toMoveData);
 
                 // Change it in the view
                 toMove = toMove->parent()->takeChild(_currentSelection->indexOfChild(toMove));
@@ -181,31 +180,36 @@ void DataStructureEditor::selectionChanged()
             _isRemovingSon = false;
             emit sonRemoved(false);
         }
-        else
+        else // We change the selection
         {
             _currentSelection = ui->treeWidget->currentItem();
             ui->deleteData->setEnabled(true);
-            SDataInstance oldCurrent = DataStructureManager::getManager()->getCurrent();
-            if (oldCurrent._data)
+            SInstance *oldCurrent = DataStructureManager::getManager()->getCurrent();
+            // Remove the old widget
+            if (oldCurrent)
             {
                 QLayoutItem *item = ui->dataViewGrid->takeAt(0);
                 item->widget()->setParent(NULL);
                 delete item;
             }
             QString selectedName = ui->treeWidget->currentItem()->text(0);
-            SDataInstance current = DataStructureManager::getManager()->getData(selectedName);
+            SInstance *current = DataStructureManager::getManager()->getData(selectedName);
             DataStructureManager::getManager()->setCurrent(current);
-            if (current._data->getView() != NULL)
+            if (current->getType() == DATA_INSTANCE)
             {
-                ui->dataViewGrid->addWidget(current._data->getView());
+                ui->dataViewGrid->addWidget(static_cast<SDataInstance*>(current)->getData()->getView());
+            }
+            else
+            {
+                ui->dataViewGrid->addWidget(_containerView);
             }
         }
     }
     else
     {
         _currentSelection = ui->treeWidget->currentItem();
-        SDataInstance oldCurrent = DataStructureManager::getManager()->getCurrent();
-        if (oldCurrent._data)
+        SInstance *oldCurrent = DataStructureManager::getManager()->getCurrent();
+        if (oldCurrent)
         {
             QLayoutItem *item = ui->dataViewGrid->takeAt(0);
             item->widget()->setParent(NULL);
