@@ -2,6 +2,8 @@
 #include "View/TextureDataView.hh"
 #include "ui_TextureDataView.h"
 
+#include "DataStructureManager.hh"
+
 #include <assert.h>
 
 // Useful table to call glTexImage
@@ -70,6 +72,7 @@ void TextureData::saveChanges()
     _width = ui->Width->value();
     _height = ui->Height->value();
     updateOpenGLParameters();
+    emit DataStructureManager::getManager()->textureChangedType();
 }
 
 GLenum TextureData::getPixelFormatFromIndex(int idx) const

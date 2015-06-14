@@ -3,6 +3,7 @@
 
 #include "RenderPassView.hh"
 #include "DataStructure/DataStructureManager.hh"
+#include "RenderPassManager.hh"
 
 RenderPassUi::RenderPassUi(QWidget *parent) :
     QWidget(parent),
@@ -48,6 +49,8 @@ RenderPassUi::RenderPassUi(QWidget *parent) :
                      this, SLOT(setOutput()));
     QObject::connect(ui->unsetOutput, SIGNAL(released()),
                      this, SLOT(unsetOutput()));
+    QObject::connect(DataStructureManager::getManager(), SIGNAL(textureChangedType()),
+                     this, SLOT(checkEnableOutput()));
 }
 
 RenderPassUi::~RenderPassUi()
@@ -57,7 +60,7 @@ RenderPassUi::~RenderPassUi()
 
 void RenderPassUi::createRenderPass()
 {
-    _currentPass = new RenderPass;
+
 }
 
 void RenderPassUi::selectedDataChanged(SInstance *current)
@@ -69,7 +72,7 @@ void RenderPassUi::selectedDataChanged(SInstance *current)
     }
     else
     {
-        enableOutput();
+        checkEnableOutput();
         ui->instantiate->setEnabled(true);
     }
 }
@@ -78,13 +81,13 @@ void RenderPassUi::instantiate()
 {
     SInstance *instance = DataStructureManager::getManager()->getCurrent()->copy();
 
-    _currentPass->setInput(instance);
+    RenderPassManager::getManager()->getCurrent()->setInput(instance);
     ui->treeWidget->addTopLevelItem(instance->getTreeItem());
 }
 
 void RenderPassUi::removeInstance()
 {
-    _currentPass->removeCurrentInput();
+    RenderPassManager::getManager()->getCurrent()->removeCurrentInput();
     QModelIndex idx = ui->treeWidget->currentIndex();
     QTreeWidgetItem *toRm = ui->treeWidget->currentItem();
 
@@ -106,8 +109,8 @@ void RenderPassUi::selectedInputChanged()
 
     if (newCurrent)
     {
-        currentInstance = _currentPass->getInput(newCurrent->text(0));
-        _currentPass->setCurrentInput(currentInstance);
+        currentInstance = RenderPassManager::getManager()->getCurrent()->getInput(newCurrent->text(0));
+        RenderPassManager::getManager()->getCurrent()->setCurrentInput(currentInstance);
 
         ui->removeInstance->setEnabled(true);
     }
@@ -133,7 +136,7 @@ void RenderPassUi::createGroup()
     SContainerInstance *toAdd = new SContainerInstance;
 
     ui->treeWidget->addTopLevelItem(toAdd->getTreeItem());
-    _currentPass->setInput(toAdd);
+    RenderPassManager::getManager()->getCurrent()->setInput(toAdd);
 }
 
 void RenderPassUi::addSon()
@@ -148,7 +151,7 @@ void RenderPassUi::removeSon()
 
 void RenderPassUi::selectedOutputChanged()
 {
-    enableOutput();
+    checkEnableOutput();
     if (ui->tableWidget->currentItem() &&
         ui->tableWidget->currentItem()->text() != "")
     {
@@ -162,30 +165,44 @@ void RenderPassUi::selectedOutputChanged()
 
 void RenderPassUi::setOutput()
 {
+    RenderPass::EOutputs attachment = static_cast<RenderPass::EOutputs>(ui->tableWidget->currentRow());
+    SDataInstance *dataInst = static_cast<SDataInstance*>(DataStructureManager::getManager()->getCurrent());
+    TextureData *texture = static_cast<TextureData*>(dataInst->getData());
+    QTableWidgetItem *item;
 
+    RenderPassManager::getManager()->getCurrent()->setOutput(attachment, texture);
+    item = ui->tableWidget->item(ui->tableWidget->currentRow(), 0);
+    if (item == NULL)
+    {
+        item = new QTableWidgetItem(texture->getName());
+        ui->tableWidget->setItem(ui->tableWidget->currentRow(), 0, item);
+    }
+    item->setText(dataInst->getName());
 }
 
 void RenderPassUi::unsetOutput()
 {
+    RenderPass::EOutputs attachment = static_cast<RenderPass::EOutputs>(ui->tableWidget->currentRow());
 
+    RenderPassManager::getManager()->getCurrent()->unsetOutput(attachment);
+    ui->tableWidget->item(ui->tableWidget->currentRow(), 0)->setText("");
 }
 
 void RenderPassUi::setCurrentVertexShader()
 {
     QString shaderCode = ui->vertexCodeEdit->toPlainText();
-    _currentPass->setVertexCode(shaderCode);
+    RenderPassManager::getManager()->getCurrent()->setVertexCode(shaderCode);
 }
 
 void RenderPassUi::setCurrentFragmentShader()
 {
     QString shaderCode = ui->fragmentCodeEdit->toPlainText();
-    _currentPass->setFragmentCode(shaderCode);
+    RenderPassManager::getManager()->getCurrent()->setFragmentCode(shaderCode);
 }
 
-void RenderPassUi::enableOutput()
+void RenderPassUi::checkEnableOutput()
 {
     SInstance *current = DataStructureManager::getManager()->getCurrent();
-
 
     if (current != NULL &&
         ui->tableWidget->currentRow() != -1 &&

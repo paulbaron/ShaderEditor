@@ -47,7 +47,8 @@ public:
     // Shaders
     void setVertexCode(QString code);
     void setFragmentCode(QString code);
-    // Render function
+    // Render functions
+    void renderGroup(SContainerInstance *root) const;
     void render() const;
 
 private:

@@ -53,7 +53,8 @@ HEADERS += \
     DataStructure/View/MatPerspectiveView.hh \
     DataStructure/View/Mat3DTransformView.hh \
     DataStructure/View/Mat3DLookAtView.hh \
-    DataStructure/SInstance.hh
+    DataStructure/SInstance.hh \
+    RenderPassManager.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -84,4 +85,5 @@ SOURCES += \
     DataStructure/View/MatPerspectiveView.cpp \
     DataStructure/View/Mat3DTransformView.cpp \
     DataStructure/View/Mat3DLookAtView.cpp \
-    DataStructure/SInstance.cpp
+    DataStructure/SInstance.cpp \
+    RenderPassManager.cpp

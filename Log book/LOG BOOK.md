@@ -112,13 +112,13 @@ finally, the program will only have 3 main panels:
 - The render pass editor
 
 They will be handled by the following managers:
-- Render pass manager -> keep the render pass graph node with all the render pass data
-- The data manager -> handle a collection of data structure, organized as a tree
+- Render pass manager: keep the render pass graph node with all the render pass data
+- The data manager: handle a collection of data structure, organized as a tree
 
 #### Thought
 Organization of the model view:
-- Model Data -> contains slots to update its attribute and the widget to display with access to the UI
-- View Data -> contains the UI created with the designer
+- Model Data: contains slots to update its attribute and the widget to display with access to the UI
+- View Data: contains the UI created with the designer
 
 #### Done today
 I have started the implementation of the data structure editor and manager and I have merged the texture editor in it.
@@ -202,3 +202,35 @@ The data structures have been changed to allow easy instantiation and copy.
 - Implement the instantiation of data in a render pass (the input tree)
 - Choose the output texture of a render pass
 - Have the first 3D rendering of a render pass
+
+## 14 june 2015
+
+#### Thought
+I started to code the render function in the render pass object.
+How is the tree going to be handled?
+
+Lets imagine a tree like that:
+- Draw Call 1
+  - **Mesh 1** _draw call_
+  - **Texture Mesh 1** _uniform variable_
+- **Object Transform** _uniform variable_
+- **Camera Transform and Projection** _uniform variable_
+- **Mesh 2** _draw call_
+
+This can actually be a problem as the draw call of **Mesh 2** does not have a uniform texture linked to it.
+It means that at all the level of the tree with a draw call, all the uniforms needs to be present.
+It would be also easier to handle if I had a rule saying that all the draw calls needs to be at the same depth in the input tree.
+
+To resume the rule I need to code:
+- All the draw calls at the same depth
+- All the uniforms needs to be filled for all the draw calls, otherwise an error will appear
+- A uniform can be set only once per level in the tree
+- If a uniform is set in two different levels of the tree, the deeper one overwrite the other
+- If two uniforms have the same name, they must be of the same type
+
+#### Done today
+I have a basic implementation of the inputs and outputs of a render pass and a basic render pass manager.
+
+#### Goals for tomorrow
+- Have the first 3D rendering as if the rules are implemented, this is very important!
+- Implement the rules described above

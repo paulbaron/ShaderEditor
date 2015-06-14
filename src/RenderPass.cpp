@@ -89,7 +89,13 @@ void RenderPass::setFragmentCode(QString code)
     _fragmentCode = code;
 }
 
+void RenderPass::renderGroup(SContainerInstance *root) const
+{
+//    QList<SInstance*>::const_iterator it = _root.begin();
+//
+//    while (it)
+}
+
 void RenderPass::render() const
 {
-    // OpenGL rendering HERE
 }

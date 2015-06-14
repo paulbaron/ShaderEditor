@@ -31,7 +31,7 @@ void RenderPassView::initializeGL()
                                "\n"
                                "void main()\n"
                                "{\n"
-                               "  gl_FragColor = vec4(texCoord, 0, 1); //texture2D(texture, texCoord);\n"
+                               "  gl_FragColor = texture2D(texture, texCoord);\n"
                                "}\n";
 
     vertex->compileSourceCode(flatVertex);

@@ -82,6 +82,26 @@ SInstance *SContainerInstance::getSon(QString sonName) const
     return (NULL);
 }
 
+QList<SInstance*>::iterator SContainerInstance::begin()
+{
+    return (_instances.begin());
+}
+
+QList<SInstance*>::const_iterator SContainerInstance::begin() const
+{
+    return (_instances.begin());
+}
+
+QList<SInstance*>::iterator SContainerInstance::end()
+{
+    return (_instances.end());
+}
+
+QList<SInstance*>::const_iterator SContainerInstance::end() const
+{
+    return (_instances.end());
+}
+
 void SContainerInstance::destroy()
 {
     QList<SInstance*>::iterator it = _instances.begin();
@@ -129,11 +149,17 @@ SDataInstance::SDataInstance(AbstractData *data)
 {
     _type = DATA_INSTANCE;
     _data = data;
+    _uniformName = "uniformData";
 }
 
 AbstractData *SDataInstance::getData() const
 {
     return (_data);
+}
+
+QString SDataInstance::getUniformName() const
+{
+    return (_uniformName);
 }
 
 void SDataInstance::destroy()

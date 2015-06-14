@@ -40,6 +40,10 @@ public:
     void addSon(SInstance *toAdd);
     bool removeSon(SInstance *toRm);
     SInstance *getSon(QString sonName) const;
+    QList<SInstance*>::iterator begin();
+    QList<SInstance*>::const_iterator begin() const;
+    QList<SInstance*>::iterator end();
+    QList<SInstance*>::const_iterator end() const;
 
     virtual void destroy();
     virtual QString getName() const;
@@ -57,12 +61,15 @@ public:
     SDataInstance(AbstractData *data);
     AbstractData *getData() const;
 
+    QString getUniformName() const;
+
     virtual void destroy();
     virtual QString getName() const;
     virtual SInstance *copy() const;
     virtual QTreeWidgetItem *getTreeItem() const;
 
 private:
+    QString _uniformName;
     AbstractData *_data;
 };
 

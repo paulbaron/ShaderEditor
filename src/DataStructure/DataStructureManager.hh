@@ -24,6 +24,7 @@ public:
 
 signals:
     void currentSelectionChanged(SInstance *current);
+    void textureChangedType();
 
 private:
     DataStructureManager();

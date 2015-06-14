@@ -36,12 +36,11 @@ public slots:
     // When the text is modified, change the value of the shader
     void setCurrentVertexShader();
     void setCurrentFragmentShader();
+    // Check if the set output button should be activated
+    void checkEnableOutput();
 
 private:
-    void enableOutput();
-
     Ui::RenderPassUi *ui;
-    RenderPass *_currentPass;
 
     bool _addSon, _removeSon;
     bool _isAddingSon, _isRemovingSon;
