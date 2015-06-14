@@ -194,3 +194,8 @@ This way, we can change the container and the shape of the tree in the render pa
 #### Done today
 It is now possible to reorganize the data tree.
 The data structures have been changed to allow easy instantiation and copy.
+
+#### Goals for tomorrow
+- Implement the instantiation of data in a render pass (the input tree)
+- Choose the output texture of a render pass
+- Have the first 3D rendering of a render pass
