@@ -20,8 +20,8 @@ RenderPassUi::RenderPassUi(QWidget *parent) :
 
     ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    QObject::connect(ui->createRenderPass, SIGNAL(released()),
-                     this, SLOT(createRenderPass()));
+    ui->inputName->setInputMask("nnnnnnnnnnnnnnnnnnnnnnnn");
+
     QObject::connect(DataStructureManager::getManager(), SIGNAL(currentSelectionChanged(SInstance*)),
                      this, SLOT(selectedDataChanged(SInstance*)));
     // Shaders
@@ -42,6 +42,8 @@ RenderPassUi::RenderPassUi(QWidget *parent) :
                      this, SLOT(addSon()));
     QObject::connect(ui->removeSon, SIGNAL(released()),
                      this, SLOT(removeSon()));
+    QObject::connect(ui->inputName, SIGNAL(textEdited(QString)),
+                    this, SLOT(inputNameChanged()));
     // Output
     QObject::connect(ui->tableWidget, SIGNAL(currentCellChanged(int,int,int,int)),
                      this, SLOT(selectedOutputChanged()));
@@ -109,25 +111,33 @@ void RenderPassUi::selectedInputChanged()
 
     if (newCurrent)
     {
-        currentInstance = RenderPassManager::getManager()->getCurrent()->getInput(newCurrent->text(0));
+        int currentInputId = newCurrent->data(0, Qt::UserRole).toInt();
+        currentInstance = RenderPassManager::getManager()->getCurrent()->getInput(currentInputId);
         RenderPassManager::getManager()->getCurrent()->setCurrentInput(currentInstance);
 
         ui->removeInstance->setEnabled(true);
-    }
-    else
-    {
-        ui->removeInstance->setEnabled(false);
-    }
-    if (currentInstance != NULL &&
-        currentInstance->getType() == CONTAINER_INSTANCE)
-    {
-        ui->addSon->setEnabled(true);
-        ui->removeSon->setEnabled(true);
+        if (currentInstance->getType() != CONTAINER_INSTANCE)
+        {
+            SDataInstance *dataInstance = static_cast<SDataInstance*>(currentInstance);
+
+            ui->inputName->setEnabled(true);
+            ui->inputName->setText(dataInstance->getInputName());
+        }
+        else
+        {
+            ui->addSon->setEnabled(true);
+            ui->removeSon->setEnabled(true);
+            ui->inputName->setEnabled(false);
+            ui->inputName->setText("");
+        }
     }
     else
     {
         ui->addSon->setEnabled(false);
         ui->removeSon->setEnabled(false);
+        ui->removeInstance->setEnabled(false);
+        ui->inputName->setEnabled(false);
+        ui->inputName->setText("");
     }
 }
 
@@ -147,6 +157,20 @@ void RenderPassUi::addSon()
 void RenderPassUi::removeSon()
 {
     _removeSon = true;
+}
+
+void RenderPassUi::inputNameChanged()
+{
+    SDataInstance *currentInput = static_cast<SDataInstance*>(RenderPassManager::getManager()->getCurrent()->getCurrentInput());
+    QString newName = ui->inputName->text();
+
+    newName.replace(" ", "");
+    if (newName == "")
+    {
+        newName = "uniformData";
+    }
+    currentInput->setInputName(newName);
+    ui->treeWidget->currentItem()->setText(1, newName);
 }
 
 void RenderPassUi::selectedOutputChanged()

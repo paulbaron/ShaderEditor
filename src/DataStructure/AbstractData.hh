@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QObject>
+#include <QOpenGLShaderProgram>
 
 class ContainerData;
 
@@ -28,6 +29,9 @@ public:
     QWidget *getView() const;
     QString getName() const;
     void setName(QString name);
+
+    virtual QString getInputType() const = 0;
+    virtual int setInput(QString inputName, QOpenGLShaderProgram *program) = 0;
 
 public slots:
     virtual void saveChanges() = 0;

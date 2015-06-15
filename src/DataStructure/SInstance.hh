@@ -4,6 +4,7 @@
 #include <QString>
 #include <QList>
 #include <QTreeWidgetItem>
+#include <QOpenGLShaderProgram>
 
 class AbstractData;
 
@@ -22,6 +23,7 @@ public:
     SInstance();
     SContainerInstance *getParent() const;
     EInstanceType getType() const;
+    int getInstanceId() const;
 
     virtual void destroy() = 0;
     virtual QString getName() const = 0;
@@ -31,6 +33,7 @@ public:
 protected:
     SContainerInstance *_parent;
     EInstanceType _type;
+    int _uniqueId;
 };
 
 class SContainerInstance : public SInstance
@@ -40,6 +43,7 @@ public:
     void addSon(SInstance *toAdd);
     bool removeSon(SInstance *toRm);
     SInstance *getSon(QString sonName) const;
+    SInstance *getSon(int instanceId) const;
     QList<SInstance*>::iterator begin();
     QList<SInstance*>::const_iterator begin() const;
     QList<SInstance*>::iterator end();
@@ -61,7 +65,9 @@ public:
     SDataInstance(AbstractData *data);
     AbstractData *getData() const;
 
-    QString getUniformName() const;
+    void setInputName(QString name);
+    QString getInputName() const;
+    int setInput(QOpenGLShaderProgram *program) const;
 
     virtual void destroy();
     virtual QString getName() const;
@@ -69,7 +75,7 @@ public:
     virtual QTreeWidgetItem *getTreeItem() const;
 
 private:
-    QString _uniformName;
+    QString _inputName;
     AbstractData *_data;
 };
 

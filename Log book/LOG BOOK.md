@@ -234,3 +234,8 @@ I have a basic implementation of the inputs and outputs of a render pass and a b
 #### Goals for tomorrow
 - Have the first 3D rendering as if the rules are implemented, this is very important!
 - Implement the rules described above
+
+## 15 june 2015
+
+#### Done today
+Started a basic drawing. The rules for the input tree are ot yet implemented

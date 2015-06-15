@@ -4,6 +4,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLFunctions>
 
 class RenderPassView : public QOpenGLWidget
 {

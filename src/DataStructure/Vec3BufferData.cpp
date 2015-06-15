@@ -14,6 +14,19 @@ Vec3BufferData::~Vec3BufferData()
     _vbo.destroy();
 }
 
+QString Vec3BufferData::getInputType() const
+{
+    return ("attribute vec3");
+}
+
+int Vec3BufferData::setInput(QString inputName, QOpenGLShaderProgram *program)
+{
+    _vbo.bind();
+    program->enableAttributeArray(inputName.toStdString().c_str());
+    program->setAttributeBuffer(inputName.toStdString().c_str(), GL_FLOAT, 0, 3);
+    return (_count);
+}
+
 void Vec3BufferData::saveChanges()
 {
     Vec3BufferDataView *dataView = static_cast<Vec3BufferDataView*>(_view);

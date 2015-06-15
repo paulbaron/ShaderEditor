@@ -1,5 +1,6 @@
 #include "RenderPassView.hh"
-
+#include "RenderPassManager.hh"
+#include "RenderPass.hh"
 #include <assert.h>
 
 RenderPassView::RenderPassView(QWidget *parent) :
@@ -11,6 +12,8 @@ RenderPassView::RenderPassView(QWidget *parent) :
 
 void RenderPassView::initializeGL()
 {
+    QObject::connect(RenderPassManager::getManager(), SIGNAL(repaintRenderPass()),
+                     this, SLOT(repaint()));
     // Initialize basic flat render shader:
     QOpenGLShader *vertex = new QOpenGLShader(QOpenGLShader::Vertex);
     QOpenGLShader *fragment = new QOpenGLShader(QOpenGLShader::Fragment);
@@ -70,6 +73,18 @@ void RenderPassView::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
     _program->bind();
+
+    RenderPass *renderPass = RenderPassManager::getManager()->getCurrent();
+    if (renderPass)
+    {
+        TextureData *texture = renderPass->getOutput(RenderPass::COLOR1_OUTPUT);
+        if (texture)
+        {
+            renderPass->glActiveTexture(GL_TEXTURE0);
+            renderPass->glBindTexture(GL_TEXTURE_2D, texture->getTextureId());
+        }
+    }
+
     _vbo.bind();
     _program->enableAttributeArray(0);
     _program->setAttributeBuffer(0, GL_FLOAT, 0, 2);

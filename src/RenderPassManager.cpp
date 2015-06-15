@@ -1,4 +1,5 @@
 #include "RenderPassManager.hh"
+#include "RenderPass.hh"
 
 RenderPassManager *RenderPassManager::_manager = NULL;
 

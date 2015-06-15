@@ -10,6 +10,9 @@ public:
     Mat4Data();
     ~Mat4Data();
 
+    QString getInputType() const;
+    int setInput(QString inputName, QOpenGLShaderProgram *program);
+
 public slots:
     void saveChanges();
 

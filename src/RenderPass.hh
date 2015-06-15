@@ -34,7 +34,7 @@ public:
     // Input
     void setInput(SInstance *toAdd);
     bool removeInput(SInstance *toRm);
-    SInstance *getInput(QString name) const;
+    SInstance *getInput(int inputId) const;
     // input selection
     void setCurrentInput(SInstance *current);
     void setCurrentInputNull();
@@ -48,13 +48,15 @@ public:
     void setVertexCode(QString code);
     void setFragmentCode(QString code);
     // Render functions
-    void renderGroup(SContainerInstance *root) const;
-    void render() const;
+    bool getInputCode(SContainerInstance const *root, QString &inputCode, QString &attributeCode) const;
+    void renderGroup(SContainerInstance const *root);
+    void render();
 
 private:
     // Shader code
     QString _vertexCode;
     QString _fragmentCode;
+    bool _codeChanged;
     // Shader objects
     QOpenGLShader *_vertex;
     QOpenGLShader *_fragment;

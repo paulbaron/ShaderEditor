@@ -7,9 +7,10 @@
 #include "View/MatPerspectiveView.hh"
 #include "ui_Mat3DTransformView.h"
 #include "ui_Mat3DLookAtView.h"
-#include "ui_MatPerspectiveView.h"
+//#include "ui_MatPerspectiveView.h"
 
 #include <../vendors/glm/gtc/matrix_transform.hpp>
+#include <../vendors/glm/gtc/type_ptr.hpp>
 
 Mat4Data::Mat4Data()
 {
@@ -20,6 +21,17 @@ Mat4Data::Mat4Data()
 Mat4Data::~Mat4Data()
 {
 
+}
+
+QString Mat4Data::getInputType() const
+{
+    return ("uniform mat4");
+}
+
+int Mat4Data::setInput(QString inputName, QOpenGLShaderProgram *program)
+{
+    program->setUniformValue(inputName.toStdString().c_str(), QMatrix4x4(glm::value_ptr(_matrix)));
+    return (0);
 }
 
 void Mat4Data::saveChanges()
@@ -58,10 +70,10 @@ void Mat4Data::saveChanges()
         break;
     case Mat4DataView::Perspective:
         {
-            Ui::MatPerspectiveView *ui = static_cast<MatPerspectiveView*>(matView->getCurrent())->getUi();
-
-            _matrix = glm::perspectiveFov(ui->fov->value(), ui->width->value(), ui->height->value(),
-                                          ui->near->value(), ui->far->value());
+//            Ui::MatPerspectiveView *ui = static_cast<MatPerspectiveView*>(matView->getCurrent())->getUi();
+//
+//            _matrix = glm::perspectiveFov(ui->fov->value(), ui->width->value(), ui->height->value(),
+//                                          ui->near->value(), ui->far->value());
         }
         break;
     default:

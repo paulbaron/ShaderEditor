@@ -59,6 +59,23 @@ GLenum TextureData::getInternalFormat() const
     return (_format);
 }
 
+GLuint TextureData::getTextureId() const
+{
+    return (_id);
+}
+
+QString TextureData::getInputType() const
+{
+    return ("uniform sampler2D");
+}
+
+int TextureData::setInput(QString inputName, QOpenGLShaderProgram *program)
+{
+//    program->setUniformValue(inputName.toStdString().c_str(), );
+//    program->
+    return (0);
+}
+
 void TextureData::saveChanges()
 {
     TextureDataView *texView = static_cast<TextureDataView*>(_view);

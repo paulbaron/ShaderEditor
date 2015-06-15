@@ -29,6 +29,7 @@ public slots:
     void createGroup();
     void addSon();
     void removeSon();
+    void inputNameChanged();
     // Ouput slots
     void selectedOutputChanged();
     void setOutput();

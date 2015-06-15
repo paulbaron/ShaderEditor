@@ -53,9 +53,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="createRenderPass">
+      <widget class="QPushButton" name="reloadView">
        <property name="text">
-        <string>Create Render Pass</string>
+        <string>Reload Visual</string>
        </property>
       </widget>
      </item>
@@ -97,9 +97,21 @@
          <widget class="QTreeWidget" name="treeWidget">
           <column>
            <property name="text">
-            <string>Name</string>
+            <string>Data</string>
            </property>
           </column>
+          <column>
+           <property name="text">
+            <string>Input Name</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="inputName">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>

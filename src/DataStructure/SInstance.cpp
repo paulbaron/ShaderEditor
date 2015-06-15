@@ -4,7 +4,10 @@
 
 SInstance::SInstance()
 {
+    static int id = 0;
+
     _parent = NULL;
+    _uniqueId = id++;
 }
 
 SContainerInstance *SInstance::getParent() const
@@ -17,12 +20,15 @@ EInstanceType SInstance::getType() const
     return (_type);
 }
 
+int SInstance::getInstanceId() const
+{
+    return (_uniqueId);
+}
+
 SContainerInstance::SContainerInstance()
 {
-    static int idx = 0;
-
     _type = CONTAINER_INSTANCE;
-    _name = "Draw Group " + QString::number(idx++);
+    _name = "Draw Group " + QString::number(_uniqueId);
 }
 
 void SContainerInstance::addSon(SInstance *toAdd)
@@ -71,6 +77,31 @@ SInstance *SContainerInstance::getSon(QString sonName) const
         {
             SContainerInstance *son = static_cast<SContainerInstance*>(*it);
             SInstance *ret = son->getSon(sonName);
+
+            if (ret != NULL)
+            {
+                return (ret);
+            }
+        }
+        ++it;
+    }
+    return (NULL);
+}
+
+SInstance *SContainerInstance::getSon(int instanceId) const
+{
+    QList<SInstance*>::const_iterator it = _instances.begin();
+
+    while (it != _instances.end())
+    {
+        if ((*it)->getInstanceId() == instanceId)
+        {
+            return (*it);
+        }
+        else if ((*it)->getType() == CONTAINER_INSTANCE)
+        {
+            SContainerInstance *son = static_cast<SContainerInstance*>(*it);
+            SInstance *ret = son->getSon(instanceId);
 
             if (ret != NULL)
             {
@@ -137,6 +168,7 @@ QTreeWidgetItem *SContainerInstance::getTreeItem() const
     QList<SInstance*>::const_iterator it = _instances.begin();
 
     item->setText(0, getName());
+    item->setData(0, Qt::UserRole, _uniqueId);
     while (it != _instances.end())
     {
         item->addChild((*it)->getTreeItem());
@@ -149,7 +181,7 @@ SDataInstance::SDataInstance(AbstractData *data)
 {
     _type = DATA_INSTANCE;
     _data = data;
-    _uniformName = "uniformData";
+    _inputName = "uniformData" + QString::number(_uniqueId);
 }
 
 AbstractData *SDataInstance::getData() const
@@ -157,9 +189,19 @@ AbstractData *SDataInstance::getData() const
     return (_data);
 }
 
-QString SDataInstance::getUniformName() const
+void SDataInstance::setInputName(QString name)
 {
-    return (_uniformName);
+    _inputName = name;
+}
+
+QString SDataInstance::getInputName() const
+{
+    return (_inputName);
+}
+
+int SDataInstance::setInput(QOpenGLShaderProgram *program) const
+{
+    return (_data->setInput(getInputName(), program));
 }
 
 void SDataInstance::destroy()
@@ -182,5 +224,7 @@ QTreeWidgetItem *SDataInstance::getTreeItem() const
     QTreeWidgetItem *item = new QTreeWidgetItem;
 
     item->setText(0, getName());
+    item->setText(1, getInputName());
+    item->setData(0, Qt::UserRole, _uniqueId);
     return (item);
 }

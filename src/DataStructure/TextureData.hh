@@ -11,6 +11,10 @@ public:
     ~TextureData();
 
     GLenum getInternalFormat() const;
+    GLuint getTextureId() const;
+
+    QString getInputType() const;
+    int setInput(QString inputName, QOpenGLShaderProgram *program);
 
 public slots:
     void saveChanges();

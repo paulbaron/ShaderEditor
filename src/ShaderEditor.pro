@@ -39,7 +39,6 @@ HEADERS += \
     DataStructure/DataStructureManager.hh \
     DataStructure/AbstractData.hh \
     DataStructure/TextureData.hh \
-    DataStructure/VectorData.hh \
     DataStructure/Mat2Data.hh \
     DataStructure/Mat3Data.hh \
     DataStructure/Mat4Data.hh \
@@ -71,7 +70,6 @@ SOURCES += \
     DataStructureEditor.cpp \
     DataStructure/DataStructureManager.cpp \
     DataStructure/TextureData.cpp \
-    DataStructure/VectorData.cpp \
     DataStructure/Mat2Data.cpp \
     DataStructure/Mat3Data.cpp \
     DataStructure/Mat4Data.cpp \

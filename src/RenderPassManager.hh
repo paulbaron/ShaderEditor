@@ -1,10 +1,14 @@
 #ifndef RENDERPASSMANAGER_H
 #define RENDERPASSMANAGER_H
 
-#include "RenderPass.hh"
+#include <QObject>
 
-class RenderPassManager
+class RenderPass;
+
+class RenderPassManager : public QObject
 {
+    Q_OBJECT
+
 public:
     static RenderPassManager *getManager();
 
@@ -12,6 +16,9 @@ public:
     void setCurrent(RenderPass *current);
     void setCurrentNull();
     RenderPass *getCurrent() const;
+
+signals:
+    void repaintRenderPass();
 
 private:
     RenderPassManager();

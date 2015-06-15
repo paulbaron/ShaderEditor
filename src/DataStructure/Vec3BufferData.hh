@@ -10,6 +10,9 @@ public:
     Vec3BufferData();
     ~Vec3BufferData();
 
+    QString getInputType() const;
+    int setInput(QString inputName, QOpenGLShaderProgram *program);
+
 public slots:
     void saveChanges();
 
