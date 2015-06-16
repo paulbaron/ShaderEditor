@@ -254,3 +254,4 @@ I now can draw some basic 3D shapes.
 #### Goals for tomorrow
 - Implement the rules for the input tree
 - Test the multiple render targets drawing
+- Need to check if the framebuffer attachments are all the same size
