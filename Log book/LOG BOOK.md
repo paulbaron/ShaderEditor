@@ -246,7 +246,7 @@ I have a basic implementation of the inputs and outputs of a render pass and a b
 No need to separate the data structure from the render groups: the groups can be both: if a group contains a draw call, then it is a render group, otherwise it is a data structure.
 
 #### Done today
-Started a basic drawing. The rules for the input tree are ot yet implemented.
+Started a basic drawing. The rules for the input tree are not yet implemented.
 I now can draw some basic 3D shapes.
 
 ![shadereditor2](https://cloud.githubusercontent.com/assets/5550866/8174390/e10021b6-13d3-11e5-8c66-b03bea509465.png)
