@@ -253,4 +253,4 @@ I now can draw some basic 3D shapes.
 
 #### Goals for tomorrow
 - Implement the rules for the input tree
-- Test the multiple render target drawing
+- Test the multiple render targets drawing
