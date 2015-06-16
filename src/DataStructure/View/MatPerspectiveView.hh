@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include <../vendors/glm/glm.hpp>
+
 namespace Ui {
 class MatPerspectiveView;
 }
@@ -15,7 +17,8 @@ public:
     explicit MatPerspectiveView(QWidget *parent = 0);
     ~MatPerspectiveView();
 
-    Ui::MatPerspectiveView *getUi() const;
+    glm::mat4 getPerspective() const;
+    Ui::MatPerspectiveView *getUi() const { return (ui); }
 
 private:
     Ui::MatPerspectiveView *ui;

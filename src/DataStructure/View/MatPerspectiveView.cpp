@@ -1,11 +1,14 @@
 #include "MatPerspectiveView.hh"
 #include "ui_MatPerspectiveView.h"
 
+#include <vendors/glm/gtc/matrix_transform.hpp>
+
 MatPerspectiveView::MatPerspectiveView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MatPerspectiveView)
 {
     ui->setupUi(this);
+
 }
 
 MatPerspectiveView::~MatPerspectiveView()
@@ -13,7 +16,8 @@ MatPerspectiveView::~MatPerspectiveView()
     delete ui;
 }
 
-Ui::MatPerspectiveView *MatPerspectiveView::getUi() const
+glm::mat4 MatPerspectiveView::getPerspective() const
 {
-    return (ui);
+    return (glm::perspectiveFov(ui->fov->value(), ui->width->value(),ui->height->value(),
+                                ui->near->value(), ui->far->value()));
 }

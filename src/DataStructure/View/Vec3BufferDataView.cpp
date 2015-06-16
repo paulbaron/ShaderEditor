@@ -92,41 +92,67 @@ void Vec3BufferDataView::loadPreset()
     switch (ui->presetComboBox->currentIndex())
     {
     case 0:
+        // Face 1
         model->appendRow(cube[0]);
         model->appendRow(cube[1]);
         model->appendRow(cube[2]);
-        model->appendRow(cube[3]);
-
-        model->appendRow(cube[4]);
-        model->appendRow(cube[5]);
-        model->appendRow(cube[6]);
-        model->appendRow(cube[7]);
-
-        model->appendRow(cube[0]);
-        model->appendRow(cube[3]);
-        model->appendRow(cube[7]);
-        model->appendRow(cube[4]);
-
-        model->appendRow(cube[1]);
-        model->appendRow(cube[2]);
-        model->appendRow(cube[6]);
-        model->appendRow(cube[5]);
-
-        model->appendRow(cube[1]);
-        model->appendRow(cube[0]);
-        model->appendRow(cube[4]);
-        model->appendRow(cube[5]);
 
         model->appendRow(cube[2]);
         model->appendRow(cube[3]);
+        model->appendRow(cube[0]);
+
+        // Face 2
+        model->appendRow(cube[4]);
+        model->appendRow(cube[5]);
+        model->appendRow(cube[6]);
+
+        model->appendRow(cube[6]);
+        model->appendRow(cube[7]);
+        model->appendRow(cube[4]);
+
+        // Face 3
+        model->appendRow(cube[0]);
+        model->appendRow(cube[3]);
+        model->appendRow(cube[7]);
+
+        model->appendRow(cube[7]);
+        model->appendRow(cube[4]);
+        model->appendRow(cube[0]);
+
+        // Face 4
+        model->appendRow(cube[1]);
+        model->appendRow(cube[2]);
+        model->appendRow(cube[6]);
+
+        model->appendRow(cube[6]);
+        model->appendRow(cube[5]);
+        model->appendRow(cube[1]);
+
+        // Face 5
+        model->appendRow(cube[1]);
+        model->appendRow(cube[0]);
+        model->appendRow(cube[4]);
+
+        model->appendRow(cube[4]);
+        model->appendRow(cube[5]);
+        model->appendRow(cube[1]);
+
+        // Face 6
+        model->appendRow(cube[2]);
+        model->appendRow(cube[3]);
+        model->appendRow(cube[7]);
+
         model->appendRow(cube[7]);
         model->appendRow(cube[6]);
+        model->appendRow(cube[2]);
         break;
     case 1:
         model->appendRow(glm::vec3(-1, -1, 0));
         model->appendRow(glm::vec3(-1, 1, 0));
         model->appendRow(glm::vec3(1, 1, 0));
+        model->appendRow(glm::vec3(1, 1, 0));
         model->appendRow(glm::vec3(1, -1, 0));
+        model->appendRow(glm::vec3(-1, -1, 0));
         break;
     default:
         assert(!"Preset not implemented");

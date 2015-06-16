@@ -17,9 +17,37 @@
    <item row="0" column="0">
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="fovLabel">
+      <widget class="QLabel" name="label">
        <property name="text">
         <string>Fov</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Width</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Height</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Near</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Far</string>
        </property>
       </widget>
      </item>
@@ -32,17 +60,10 @@
         <double>1.000000000000000</double>
        </property>
        <property name="maximum">
-        <double>180.000000000000000</double>
+        <double>360.000000000000000</double>
        </property>
        <property name="value">
-        <double>40.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="widthLabel">
-       <property name="text">
-        <string>Width</string>
+        <double>35.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -50,6 +71,9 @@
       <widget class="QDoubleSpinBox" name="width">
        <property name="locale">
         <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="minimum">
+        <double>1.000000000000000</double>
        </property>
        <property name="maximum">
         <double>999999.000000000000000</double>
@@ -59,17 +83,13 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="heightLabel">
-       <property name="text">
-        <string>Height</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <widget class="QDoubleSpinBox" name="height">
        <property name="locale">
         <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="minimum">
+        <double>1.000000000000000</double>
        </property>
        <property name="maximum">
         <double>999999.000000000000000</double>
@@ -79,27 +99,19 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="nearLabel">
-       <property name="text">
-        <string>Near</string>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="1">
       <widget class="QDoubleSpinBox" name="near">
        <property name="locale">
         <locale language="English" country="UnitedStates"/>
        </property>
+       <property name="minimum">
+        <double>-999999.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>999999.000000000000000</double>
+       </property>
        <property name="value">
         <double>0.100000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="farLabel">
-       <property name="text">
-        <string>Far</string>
        </property>
       </widget>
      </item>
@@ -112,7 +124,7 @@
         <double>999999.000000000000000</double>
        </property>
        <property name="value">
-        <double>99.989999999999995</double>
+        <double>99.000000000000000</double>
        </property>
       </widget>
      </item>

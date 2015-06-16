@@ -64,6 +64,16 @@ GLuint TextureData::getTextureId() const
     return (_id);
 }
 
+GLuint TextureData::getWidth() const
+{
+    return (_width);
+}
+
+GLuint TextureData::getHeight() const
+{
+    return (_height);
+}
+
 QString TextureData::getInputType() const
 {
     return ("uniform sampler2D");

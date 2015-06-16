@@ -13,6 +13,9 @@ public:
     GLenum getInternalFormat() const;
     GLuint getTextureId() const;
 
+    GLuint getWidth() const;
+    GLuint getHeight() const;
+
     QString getInputType() const;
     int setInput(QString inputName, QOpenGLShaderProgram *program);
 
