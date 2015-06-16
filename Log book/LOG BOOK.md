@@ -221,21 +221,29 @@ This can actually be a problem as the draw call of **Mesh 2** does not have a un
 It means that at all the level of the tree with a draw call, all the uniforms needs to be present.
 It would be also easier to handle if I had a rule saying that all the draw calls needs to be at the same depth in the input tree.
 
-To resume the rule I need to code:
+To resume the rules I need to code:
 - All the draw calls at the same depth
 - All the uniforms needs to be filled for all the draw calls, otherwise an error will appear
 - A uniform can be set only once per level in the tree
 - If a uniform is set in two different levels of the tree, the deeper one overwrite the other
 - If two uniforms have the same name, they must be of the same type
 
+#### Thought
+
+Maybe think of a way to separate the data structures from the render groups.
+
 #### Done today
 I have a basic implementation of the inputs and outputs of a render pass and a basic render pass manager.
 
 #### Goals for tomorrow
-- Have the first 3D rendering as if the rules are implemented, this is very important!
+- Have the first 3D rendering as if the rules were implemented, this is very important!
 - Implement the rules described above
 
 ## 15 june 2015
+
+#### Thought
+
+No need to separate the data structure from the render groups: the groups can be both: if a group contains a draw call, then it is a render group, otherwise it is a data structure.
 
 #### Done today
 Started a basic drawing. The rules for the input tree are ot yet implemented.
