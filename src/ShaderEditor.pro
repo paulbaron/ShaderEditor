@@ -19,9 +19,9 @@ FORMS += \
     DataStructure/View/ContainerView.ui \
     DataStructure/View/Vec3BufferDataView.ui \
     DataStructure/View/Mat4DataView.ui \
-    DataStructure/View/MatPerspectiveView.ui \
     DataStructure/View/Mat3DTransformView.ui \
-    DataStructure/View/Mat3DLookAtView.ui
+    DataStructure/View/Mat3DLookAtView.ui \
+    DataStructure/View/MatPerspectiveView.ui
 
 HEADERS += \
     BezierCurveView.hpp \
@@ -49,11 +49,11 @@ HEADERS += \
     DataStructure/View/Mat4DataView.hh \
     DataStructure/View/GlmVecTableModel.hh \
     DataStructure/View/DoubleSpinBoxDelegate.hh \
-    DataStructure/View/MatPerspectiveView.hh \
     DataStructure/View/Mat3DTransformView.hh \
     DataStructure/View/Mat3DLookAtView.hh \
     DataStructure/SInstance.hh \
-    RenderPassManager.hh
+    RenderPassManager.hh \
+    DataStructure/View/MatPerspectiveView.hh
 
 SOURCES += \
     BezierCurveView.cpp \
@@ -80,8 +80,8 @@ SOURCES += \
     DataStructure/View/Vec3BufferDataView.cpp \
     DataStructure/View/Mat4DataView.cpp \
     DataStructure/View/DoubleSpinBoxDelegate.cpp \
-    DataStructure/View/MatPerspectiveView.cpp \
     DataStructure/View/Mat3DTransformView.cpp \
     DataStructure/View/Mat3DLookAtView.cpp \
     DataStructure/SInstance.cpp \
-    RenderPassManager.cpp
+    RenderPassManager.cpp \
+    DataStructure/View/MatPerspectiveView.cpp

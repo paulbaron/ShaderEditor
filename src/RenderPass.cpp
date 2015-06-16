@@ -28,6 +28,8 @@ RenderPass::RenderPass()
     {
         _outputs[i] = NULL;
     }
+    _width = 0;
+    _height = 0;
    // Inputs
     _currentSelection = NULL;
 }
@@ -82,6 +84,8 @@ void RenderPass::setOutput(EOutputs attachment, TextureData *texture)
     glFramebufferTexture2D(GL_FRAMEBUFFER, openGLAttachment[attachment], GL_TEXTURE_2D, texture->getTextureId(), 0);
     _outputs[attachment] = texture;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    _width = texture->getWidth();
+    _height = texture->getHeight();
 }
 
 void RenderPass::unsetOutput(EOutputs attachment)
@@ -90,6 +94,13 @@ void RenderPass::unsetOutput(EOutputs attachment)
     glFramebufferTexture2D(GL_FRAMEBUFFER, openGLAttachment[attachment], GL_TEXTURE_2D, 0, 0);
     _outputs[attachment] = NULL;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    for (int i = 0; i < NBR_OUTPUT; ++i)
+    {
+        if (_outputs[i] != NULL)
+            return;
+    }
+    _width = 0;
+    _height = 0;
 }
 
 TextureData *RenderPass::getOutput(EOutputs attachment) const
@@ -146,6 +157,32 @@ bool RenderPass::getInputCode(SContainerInstance const *root, QString &inputCode
     return (vertexBufferFound);
 }
 
+QString RenderPass::getOutputCode() const
+{
+    QString outputCode;
+
+    for (int i = 2; i < NBR_OUTPUT; ++i)
+    {
+        if (_outputs[i] != NULL)
+        {
+            outputCode += "out vec4 Color" + QString::number(i - 1) + ";\n";
+        }
+    }
+    return (outputCode);
+}
+
+void RenderPass::bindOutput()
+{
+    for (int i = 2; i < NBR_OUTPUT; ++i)
+    {
+        if (_outputs[i] != NULL)
+        {
+            QString outputName = "Color" + QString::number(i - 1);
+            glBindFragDataLocation(_program->programId(), i - 2, outputName.toStdString().c_str());
+        }
+    }
+}
+
 void RenderPass::renderGroup(SContainerInstance const *root)
 {
     QList<SInstance*>::const_iterator it = _root.begin();
@@ -184,21 +221,25 @@ void RenderPass::render()
         QString finalVertexCode, finalFragmentCode;
 
         getInputCode(&_root, uniformCode, attributeCode);
-        finalVertexCode = uniformCode + "\n" + attributeCode + "\n" + _vertexCode;
-        finalFragmentCode = uniformCode + "\n" + _fragmentCode;
+        finalVertexCode = "#version 140\n" + uniformCode + "\n" + attributeCode + "\n" + _vertexCode;
+        finalFragmentCode = "#version 140\n" + uniformCode + "\n" + getOutputCode() + "\n" + _fragmentCode;
         bool vertexCompile = _vertex->compileSourceCode(finalVertexCode.toStdString().c_str());
         bool fragCompile = _fragment->compileSourceCode(finalFragmentCode.toStdString().c_str());
         _program->removeAllShaders();
         bool addVertex = _program->addShader(_vertex);
         bool addFragment = _program->addShader(_fragment);
+        bindOutput();
         _codeChanged = false;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
     glClearColor(0, 1, 0, 1);
     glClearDepth(1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glViewport(0, 0, _width, _height);
     _program->bind();
     renderGroup(&_root);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDisable(GL_DEPTH_TEST);
     emit RenderPassManager::getManager()->repaintRenderPass();
 }

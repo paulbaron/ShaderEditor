@@ -67,6 +67,11 @@ void RenderPassView::initializeGL()
     _vbo.allocate(quadPositions, 6 * 2 * sizeof(float));
 }
 
+void RenderPassView::resizeGL(int w, int h)
+{
+    glViewport(0, 0, w, h);
+}
+
 void RenderPassView::paintGL()
 {
     glClearColor(1, 0, 0, 1);

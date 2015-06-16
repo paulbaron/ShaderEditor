@@ -4,12 +4,12 @@
 #include <QVector>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLShader>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_3_1>
 
 #include "DataStructure/SInstance.hh"
 #include "DataStructure/TextureData.hh"
 
-class RenderPass : public QOpenGLFunctions
+class RenderPass : public QOpenGLFunctions_3_1
 {
 public:
     enum EOutputs
@@ -49,6 +49,8 @@ public:
     void setFragmentCode(QString code);
     // Render functions
     bool getInputCode(SContainerInstance const *root, QString &inputCode, QString &attributeCode) const;
+    QString getOutputCode() const;
+    void bindOutput();
     void renderGroup(SContainerInstance const *root);
     void render();
 
@@ -64,6 +66,7 @@ private:
     // FBO
     GLuint _fbo;
     TextureData *_outputs[NBR_OUTPUT];
+    GLuint _width, _height;
    // Inputs
     SContainerInstance _root;
     SInstance *_currentSelection;

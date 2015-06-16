@@ -238,4 +238,11 @@ I have a basic implementation of the inputs and outputs of a render pass and a b
 ## 15 june 2015
 
 #### Done today
-Started a basic drawing. The rules for the input tree are ot yet implemented
+Started a basic drawing. The rules for the input tree are ot yet implemented.
+I now can draw some basic 3D shapes.
+
+![shadereditor2](https://cloud.githubusercontent.com/assets/5550866/8174390/e10021b6-13d3-11e5-8c66-b03bea509465.png)
+
+#### Goals for tomorrow
+- Implement the rules for the input tree
+- Test the multiple render target drawing
