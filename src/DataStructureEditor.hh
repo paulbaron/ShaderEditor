@@ -7,6 +7,10 @@
 
 #include <QTreeWidgetItem>
 
+#include <QDataStream>
+
+#include "RenderPassUi.h"
+
 class ContainerView;
 
 namespace Ui {
@@ -18,8 +22,10 @@ class DataStructureEditor : public QWidget
     Q_OBJECT
 
 public:
-    explicit DataStructureEditor(QWidget *parent = 0);
+    explicit DataStructureEditor(RenderPassUi *renderPassui, QWidget *parent = 0);
     ~DataStructureEditor();
+
+    void reloadUi();
 
 public slots:
     void createData();
@@ -34,6 +40,8 @@ signals:
     void sonRemoved(bool checked);
 
 private:
+    void recursiveDeleteDataFromRenderPass(SInstance *data);
+
     Ui::DataStructureEditor *ui;
     ContainerView *_containerView;
 
@@ -44,6 +52,8 @@ private:
 
     bool _isAddingSon;
     bool _isRemovingSon;
+
+    RenderPassUi *_renderPassUi;
 };
 
 #endif // DATASTRUCTUREEDITOR_HH

@@ -1,6 +1,20 @@
 #include "RenderPass.hh"
 #include "RenderPassManager.hh"
 
+#include "InputChecker.hh"
+
+#include "DataStructure/ABufferData.hh"
+
+#include "ui_RenderPassUi.h"
+
+#include "EditorException.hh"
+
+#include "QtOpenGLFunctions.hh"
+
+#include "DataStructure/DataStructureManager.hh"
+
+#include <iostream>
+
 static int openGLAttachment[] =
 {
     GL_DEPTH_ATTACHMENT,
@@ -16,14 +30,13 @@ static int openGLAttachment[] =
 
 RenderPass::RenderPass()
 {
-    initializeOpenGLFunctions();
-    // Shader objects
-    _vertex = new QOpenGLShader(QOpenGLShader::Vertex);
-    _fragment = new QOpenGLShader(QOpenGLShader::Fragment);
-    _program = new QOpenGLShaderProgram;
+    // Shader basic code
+    QString code = "\nvoid main()\n{\n}\n";
+    _vertexCode = code;
+    _fragmentCode = code;
     _codeChanged = true;
     // FBO
-    glGenFramebuffers(1, &_fbo);
+    GLContext::get()->glGenFramebuffers(1, &_fbo);
     for (int i = 0; i < NBR_OUTPUT; ++i)
     {
         _outputs[i] = NULL;
@@ -36,10 +49,8 @@ RenderPass::RenderPass()
 
 RenderPass::~RenderPass()
 {
-    delete _vertex;
-    delete _fragment;
-    delete _program;
-    glDeleteFramebuffers(1, &_fbo);
+    _root.clearAll();
+    GLContext::get()->glDeleteFramebuffers(1, &_fbo);
 }
 
 void RenderPass::setInput(SInstance *toAdd)
@@ -47,9 +58,29 @@ void RenderPass::setInput(SInstance *toAdd)
     _root.addSon(toAdd);
 }
 
-bool RenderPass::removeInput(SInstance *toRm)
+void RenderPass::removeInput(SInstance *toRm, bool freeMemory)
 {
-    return (_root.removeSon(toRm));
+    if (toRm->getType() == DATA_INSTANCE)
+    {
+        _root.removeSon(toRm);
+    }
+    else if (toRm->getType() == CONTAINER_INSTANCE)
+    {
+        if (freeMemory)
+        {
+            SContainerInstance *container = static_cast<SContainerInstance*>(toRm);
+            QList<SInstance*>::iterator it = container->begin();
+
+            while (it != container->end())
+            {
+                removeInput(*it);
+                ++it;
+            }
+        }
+        _root.removeSon(toRm);
+    }
+    if (freeMemory)
+        delete toRm;
 }
 
 SInstance *RenderPass::getInput(int inputId) const
@@ -67,9 +98,9 @@ void RenderPass::setCurrentInputNull()
     _currentSelection = NULL;
 }
 
-void RenderPass::removeCurrentInput()
+void RenderPass::removeCurrentInput(bool freeMemory)
 {
-    removeInput(_currentSelection);
+    removeInput(_currentSelection, freeMemory);
     setCurrentInputNull();
 }
 
@@ -78,22 +109,30 @@ SInstance *RenderPass::getCurrentInput() const
     return (_currentSelection);
 }
 
-void RenderPass::setOutput(EOutputs attachment, TextureData *texture)
+void RenderPass::setOutput(EOutputs attachment, RenderTextureData *rt)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, openGLAttachment[attachment], GL_TEXTURE_2D, texture->getTextureId(), 0);
-    _outputs[attachment] = texture;
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    _width = texture->getWidth();
-    _height = texture->getHeight();
+    GLContext::get()->glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+    GLContext::get()->glFramebufferTexture2D(GL_FRAMEBUFFER, openGLAttachment[attachment], GL_TEXTURE_2D, rt->getTextureId(), 0);
+    _outputs[attachment] = rt;
+    GLContext::get()->glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    _width =  rt->getWidth();
+    _height = rt->getHeight();
+    if (attachment == RenderPassManager::getManager()->getTextureToDisplay())
+    {
+        emit RenderPassManager::getManager()->textureToDisplayChanged(rt->getTextureId());
+    }
 }
 
 void RenderPass::unsetOutput(EOutputs attachment)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, openGLAttachment[attachment], GL_TEXTURE_2D, 0, 0);
+    GLContext::get()->glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+    GLContext::get()->glFramebufferTexture2D(GL_FRAMEBUFFER, openGLAttachment[attachment], GL_TEXTURE_2D, 0, 0);
     _outputs[attachment] = NULL;
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    GLContext::get()->glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    if (attachment == RenderPassManager::getManager()->getTextureToDisplay())
+    {
+        emit RenderPassManager::getManager()->textureToDisplayChanged(0);
+    }
     for (int i = 0; i < NBR_OUTPUT; ++i)
     {
         if (_outputs[i] != NULL)
@@ -103,7 +142,7 @@ void RenderPass::unsetOutput(EOutputs attachment)
     _height = 0;
 }
 
-TextureData *RenderPass::getOutput(EOutputs attachment) const
+RenderTextureData *RenderPass::getOutput(EOutputs attachment) const
 {
     return (_outputs[attachment]);
 }
@@ -112,49 +151,12 @@ void RenderPass::setVertexCode(QString code)
 {
     _vertexCode = code;
     _codeChanged = true;
-    render();
 }
 
 void RenderPass::setFragmentCode(QString code)
 {
     _fragmentCode = code;
     _codeChanged = true;
-    render();
-}
-
-bool RenderPass::getInputCode(SContainerInstance const *root, QString &inputCode, QString &attributeCode) const
-{
-    QList<SInstance*>::const_iterator it = _root.begin();
-    bool vertexBufferFound = false;
-    bool stopRecursion = false;
-
-    while (it != root->end())
-    {
-        if ((*it)->getType() == CONTAINER_INSTANCE)
-        {
-            if (stopRecursion == false)
-            {
-                stopRecursion = getInputCode(static_cast<SContainerInstance*>(*it), inputCode, attributeCode);
-            }
-        }
-        else
-        {
-            SDataInstance *inputData = static_cast<SDataInstance*>(*it);
-
-            if (inputData->getData()->getType() == AbstractData::DATA_VERTEX_BUFFER)
-            {
-                // As we reach the vertex buffer, all the uniforms are supposed to be setted
-                vertexBufferFound = true;
-                attributeCode += inputData->getData()->getInputType() + " " + inputData->getInputName() + ";\n";
-            }
-            else
-            {
-                inputCode += inputData->getData()->getInputType() + " " + inputData->getInputName() + ";\n";
-            }
-        }
-        ++it;
-    }
-    return (vertexBufferFound);
 }
 
 QString RenderPass::getOutputCode() const
@@ -173,73 +175,136 @@ QString RenderPass::getOutputCode() const
 
 void RenderPass::bindOutput()
 {
+    int renderTarget = 0;
+    GLenum drawBuffers[7];
+
+    for (int i = 0; i < 7; ++i)
+    {
+        drawBuffers[i] = GL_NONE;
+    }
+    GLContext::get()->glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
     for (int i = 2; i < NBR_OUTPUT; ++i)
     {
         if (_outputs[i] != NULL)
         {
             QString outputName = "Color" + QString::number(i - 1);
-            glBindFragDataLocation(_program->programId(), i - 2, outputName.toStdString().c_str());
+            drawBuffers[renderTarget] = GL_COLOR_ATTACHMENT0 + i - 2;
+            GLContext::get()->glBindFragDataLocation(_shader.getProgramId(), renderTarget, outputName.toStdString().c_str());
+            renderTarget += 1;
         }
     }
+    GLContext::get()->glDrawBuffers(7, drawBuffers);
 }
 
 void RenderPass::renderGroup(SContainerInstance const *root)
 {
-    QList<SInstance*>::const_iterator it = _root.begin();
-    int count = 0;
+    QList<SContainerInstance*> toExplore;
+    bool isIndexed = false;
+    int drawCallVertexCount = 0;
 
-    while (it != root->end())
+    for (QList<SInstance*>::const_iterator it = root->begin(); it != root->end(); ++it)
     {
         if ((*it)->getType() == CONTAINER_INSTANCE)
         {
-            renderGroup(static_cast<SContainerInstance*>(*it));
+            toExplore.push_back(static_cast<SContainerInstance*>(*it));
         }
         else
         {
             SDataInstance *inputData = static_cast<SDataInstance*>(*it);
-            int tmpCount = inputData->setInput(_program);
 
-            if (tmpCount != 0)
+            inputData->setInput(_shader);
+
+            if (drawCallVertexCount == 0 &&
+                inputData->getData()->getType() == AbstractData::DATA_VERTEX_BUFFER &&
+                isIndexed == false)
             {
-                // As we reach the vertex buffer, we can start a draw
-                count = tmpCount;
+                drawCallVertexCount = static_cast<ABufferData*>(inputData->getData())->getCount();
+            }
+            else if (inputData->getData()->getType() == AbstractData::DATA_INDEX_BUFFER)
+            {
+                drawCallVertexCount = static_cast<ABufferData*>(inputData->getData())->getCount();
+                isIndexed = true;
             }
         }
-        ++it;
     }
-    if (count != 0)
+    if (drawCallVertexCount != 0)
     {
-        glDrawArrays(GL_TRIANGLES, 0, count);
+        if (isIndexed)
+        {
+            GLContext::get()->glDrawElements(GL_TRIANGLES, drawCallVertexCount, GL_UNSIGNED_INT, (GLvoid*)0);
+        }
+        else
+        {
+            GLContext::get()->glDrawArrays(GL_TRIANGLES, 0, drawCallVertexCount);
+        }
+    }
+    for (QList<SContainerInstance*>::const_iterator it = toExplore.begin(); it != toExplore.end(); ++it)
+    {
+        renderGroup(*it);
     }
 }
 
 void RenderPass::render()
 {
-    if (_codeChanged)
-    {
-        QString uniformCode, attributeCode;
-        QString finalVertexCode, finalFragmentCode;
+    QString uniformCode, attributeCode;
+    QString finalVertexCode, finalFragmentCode;
+    InputChecker checker;
 
-        getInputCode(&_root, uniformCode, attributeCode);
-        finalVertexCode = "#version 140\n" + uniformCode + "\n" + attributeCode + "\n" + _vertexCode;
-        finalFragmentCode = "#version 140\n" + uniformCode + "\n" + getOutputCode() + "\n" + _fragmentCode;
-        bool vertexCompile = _vertex->compileSourceCode(finalVertexCode.toStdString().c_str());
-        bool fragCompile = _fragment->compileSourceCode(finalFragmentCode.toStdString().c_str());
-        _program->removeAllShaders();
-        bool addVertex = _program->addShader(_vertex);
-        bool addFragment = _program->addShader(_fragment);
+    // Check the inputs and get the code of the uniforms and attributes
+    checker.checkInput(&_root, uniformCode, attributeCode);
+
+    finalVertexCode = "#version 150\n" + uniformCode + "\n" + attributeCode + "\n" + _vertexCode;
+    finalFragmentCode = "#version 150\n" + uniformCode + "\n" + getOutputCode() + "\n" + _fragmentCode;
+    try
+    {
+        _shader.load(finalVertexCode, GLSLShader::VERTEX_SHADER);
+        _shader.load(finalFragmentCode, GLSLShader::FRAGMENT_SHADER);
+        _shader.build();
+        _shader.bind();
         bindOutput();
-        _codeChanged = false;
+        GLContext::get()->glViewport(0, 0, _width, _height);
+        _state.setOpenGLState();
+        renderGroup(&_root);
     }
-    glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-    glClearColor(0, 1, 0, 1);
-    glClearDepth(1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glViewport(0, 0, _width, _height);
-    _program->bind();
-    renderGroup(&_root);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    emit RenderPassManager::getManager()->repaintRenderPass();
+    catch (EditorException &ex)
+    {
+        ex.displayErrorMessage();
+    }
+}
+
+void RenderPass::updateOpenGLState(Ui::RenderPassUi *ui)
+{
+    _state.updateOpenGLState(ui);
+}
+
+void RenderPass::updateRenderPassUi(Ui::RenderPassUi *ui)
+{
+    ui->vertexCodeEdit->setPlainText(_vertexCode);
+    ui->fragmentCodeEdit->setPlainText(_fragmentCode);
+    ui->treeWidget->clear();
+
+    for (QList<SInstance*>::const_iterator it = _root.begin(); it != _root.end(); ++it)
+    {
+        ui->treeWidget->addTopLevelItem((*it)->getTreeItem());
+    }
+    ui->inputName->setEnabled(false);
+    ui->addSon->setEnabled(false);
+    ui->removeSon->setEnabled(false);
+    ui->tableWidget->clearContents();
+    for (int i = 0; i < NBR_OUTPUT; ++i)
+    {
+        if (_outputs[i] != NULL)
+        {
+            QTableWidgetItem *item = new QTableWidgetItem(getOutput((EOutputs)i)->getName());
+            ui->tableWidget->setItem(i, 0, item);
+        }
+    }
+    ui->setOutput->setEnabled(false);
+    ui->unsetOutput->setEnabled(false);
+    _state.updateUiState(ui);
+}
+
+void RenderPass::removeData(AbstractData *data)
+{
+    _root.removeSonsData(data);
 }

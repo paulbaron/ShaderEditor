@@ -63,7 +63,7 @@
         <double>360.000000000000000</double>
        </property>
        <property name="value">
-        <double>35.000000000000000</double>
+        <double>60.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -79,7 +79,7 @@
         <double>999999.000000000000000</double>
        </property>
        <property name="value">
-        <double>800.000000000000000</double>
+        <double>1280.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -95,12 +95,12 @@
         <double>999999.000000000000000</double>
        </property>
        <property name="value">
-        <double>600.000000000000000</double>
+        <double>720.000000000000000</double>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QDoubleSpinBox" name="near">
+      <widget class="QDoubleSpinBox" name="nearDist">
        <property name="locale">
         <locale language="English" country="UnitedStates"/>
        </property>
@@ -116,7 +116,7 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QDoubleSpinBox" name="far">
+      <widget class="QDoubleSpinBox" name="farDist">
        <property name="locale">
         <locale language="English" country="UnitedStates"/>
        </property>

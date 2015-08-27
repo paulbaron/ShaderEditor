@@ -18,8 +18,7 @@ public:
     {
         Transform,
         LookAt,
-        Perspective,
-        Orthogonal
+        Perspective
     };
 
     explicit Mat4DataView(AbstractData *data, QWidget *parent = 0);

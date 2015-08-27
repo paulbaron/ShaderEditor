@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>541</width>
-    <height>651</height>
+    <width>860</width>
+    <height>594</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,7 +28,7 @@
      <item>
       <widget class="QTabWidget" name="ShaderTextTabs">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="VertexShaderTab">
         <attribute name="title">
@@ -38,10 +38,7 @@
          <item row="0" column="0">
           <widget class="QPlainTextEdit" name="vertexCodeEdit">
            <property name="plainText">
-            <string>
-void main()
-{
-}</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -55,16 +52,1272 @@ void main()
          <item row="0" column="0">
           <widget class="QPlainTextEdit" name="fragmentCodeEdit">
            <property name="plainText">
-            <string>
-void main()
-{
-}</string>
+            <string/>
            </property>
           </widget>
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="OpenGLStateTab">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <attribute name="title">
+         <string>OpenGL State</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QScrollArea" name="scrollArea">
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>365</width>
+              <height>1486</height>
+             </rect>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QGroupBox" name="groupBox_2">
+               <property name="title">
+                <string>Color</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_13">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_25">
+                  <property name="text">
+                   <string>Write Mask       </string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                  <item>
+                   <widget class="QCheckBox" name="redWrite_3">
+                    <property name="text">
+                     <string>R</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                    <property name="tristate">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="greenWrite_3">
+                    <property name="text">
+                     <string>G</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="blueWrite_3">
+                    <property name="text">
+                     <string>B</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="alphaWrite_3">
+                    <property name="text">
+                     <string>A</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox">
+               <property name="title">
+                <string>Depth</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_12">
+                <item row="0" column="0">
+                 <widget class="QCheckBox" name="writeDepth_3">
+                  <property name="text">
+                   <string>Write Depth</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QCheckBox" name="enableDepthTest_3">
+                  <property name="text">
+                   <string>Enable Depth Test</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_24">
+                  <property name="text">
+                   <string>Depth Func</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QComboBox" name="depthFunc_3">
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>NEVER</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>LESS</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>LESS OR EQUAL</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>GREATER</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>GREATER OR EQUAL</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>EQUAL</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>NOT EQUAL</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ALWAYS</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_6">
+               <property name="title">
+                <string>Clear</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_4">
+                <item>
+                 <widget class="QGroupBox" name="groupBox_7">
+                  <property name="title">
+                   <string>Color Buffer</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_3">
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_5">
+                     <property name="text">
+                      <string>R</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QDoubleSpinBox" name="clearColorRed">
+                     <property name="maximum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.100000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_6">
+                     <property name="text">
+                      <string>G</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QDoubleSpinBox" name="clearColorGreen">
+                     <property name="maximum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.100000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_7">
+                     <property name="text">
+                      <string>B</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QDoubleSpinBox" name="clearColorBlue">
+                     <property name="maximum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.100000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="label_8">
+                     <property name="text">
+                      <string>A</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QDoubleSpinBox" name="clearColorAlpha">
+                     <property name="maximum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.100000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QCheckBox" name="clearColorBuffer">
+                     <property name="text">
+                      <string>Clear Color Buffer</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="groupBox_8">
+                  <property name="title">
+                   <string>Depth Buffer</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_2">
+                   <item row="1" column="0">
+                    <widget class="QCheckBox" name="clearDepthBuffer">
+                     <property name="text">
+                      <string>Clear Depth Buffer</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_4">
+                     <property name="text">
+                      <string>Depth Value</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QDoubleSpinBox" name="clearDepthValue">
+                     <property name="maximum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="value">
+                      <double>1.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="groupBox_9">
+                  <property name="title">
+                   <string>Stencil Buffer</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_4">
+                   <item row="1" column="0">
+                    <widget class="QCheckBox" name="clearStencilBuffer">
+                     <property name="text">
+                      <string>Clear Stencil Buffer</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_9">
+                     <property name="text">
+                      <string>Stencil Value</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QSpinBox" name="clearStencilValue"/>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_3">
+               <property name="title">
+                <string>Blending</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_11">
+                <item row="1" column="0">
+                 <widget class="QCheckBox" name="enableBlending_3">
+                  <property name="text">
+                   <string>Enable Blending</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_18">
+                  <property name="text">
+                   <string>RGB Blend Equation</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QComboBox" name="rgbBlendEquation_3">
+                  <item>
+                   <property name="text">
+                    <string>ADD</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SUBTRACT</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>REVERSE SUBTRACT</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>MIN</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>MAX</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_19">
+                  <property name="text">
+                   <string>RGB Source Mode</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QComboBox" name="rgbSourceMode_3">
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>ZERO</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ONE</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_20">
+                  <property name="text">
+                   <string>RGB Destination Mode</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QComboBox" name="rgbDestinationMode_3">
+                  <item>
+                   <property name="text">
+                    <string>ZERO</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ONE</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_21">
+                  <property name="text">
+                   <string>Alpha Blend Equation</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QComboBox" name="alphaBlendEquation_3">
+                  <item>
+                   <property name="text">
+                    <string>ADD</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SUBTRACT</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>REVERSE SUBTRACT</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>MIN</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>MAX</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_22">
+                  <property name="text">
+                   <string>Alpha Source Mode</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QComboBox" name="alphaSourceMode_3">
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>ZERO</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ONE</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_23">
+                  <property name="text">
+                   <string>Alpha Destination Mode</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="QComboBox" name="alphaDestinationMode_3">
+                  <item>
+                   <property name="text">
+                    <string>ZERO</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ONE</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION COLOR</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - SOURCE ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1 - DESTINATION ALPHA</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_5">
+               <property name="title">
+                <string>Culling</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout">
+                <item row="0" column="0">
+                 <widget class="QCheckBox" name="enableFaceCulling">
+                  <property name="text">
+                   <string>Enable Face Culling</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>Culling Mode</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QComboBox" name="cullingMode">
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>FRONT FACES</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>BACK FACES</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>FRONT AND BACK FACES</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_4">
+               <property name="title">
+                <string>Stencil</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <widget class="QCheckBox" name="writeStencil_3">
+                  <property name="text">
+                   <string>Write Stencil</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="enableStencilTest_3">
+                  <property name="text">
+                   <string>Enable Stencil Test</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="backFaceGroup">
+                  <property name="title">
+                   <string>Back Face</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_16">
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_2">
+                     <property name="text">
+                      <string>Stencil Func</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QComboBox" name="backStencilFunc">
+                     <property name="currentIndex">
+                      <number>7</number>
+                     </property>
+                     <item>
+                      <property name="text">
+                       <string>NEVER</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>LESS</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>LESS OR EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>GREATER</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>GREATER OR EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>NOT EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ALWAYS</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_30">
+                     <property name="text">
+                      <string>Reference</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QSpinBox" name="backStencilRef"/>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_31">
+                     <property name="text">
+                      <string>Stencil Test Fails</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QComboBox" name="backStencilTestFails">
+                     <item>
+                      <property name="text">
+                       <string>KEEP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ZERO</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>REPLACE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INVERT</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="label_32">
+                     <property name="text">
+                      <string>Depth Test Fails</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QComboBox" name="backDepthTestFails">
+                     <item>
+                      <property name="text">
+                       <string>KEEP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ZERO</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>REPLACE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INVERT</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="label_33">
+                     <property name="text">
+                      <string>Stencil and Depth Pass</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QComboBox" name="backStencilAndDepthPass">
+                     <item>
+                      <property name="text">
+                       <string>KEEP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ZERO</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>REPLACE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INVERT</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="frontFaceGroup">
+                  <property name="title">
+                   <string>Front Face</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_15">
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label">
+                     <property name="text">
+                      <string>Stencil Func</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QComboBox" name="frontStencilFunc">
+                     <property name="currentIndex">
+                      <number>7</number>
+                     </property>
+                     <item>
+                      <property name="text">
+                       <string>NEVER</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>LESS</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>LESS OR EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>GREATER</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>GREATER OR EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>NOT EQUAL</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ALWAYS</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_26">
+                     <property name="text">
+                      <string>Reference</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QSpinBox" name="frontStencilRef"/>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_27">
+                     <property name="text">
+                      <string>Stencil Test Fails</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QComboBox" name="frontStencilTestFails">
+                     <item>
+                      <property name="text">
+                       <string>KEEP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ZERO</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>REPLACE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INVERT</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="label_28">
+                     <property name="text">
+                      <string>Depth Test Fails</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QComboBox" name="frontDepthTestFails">
+                     <item>
+                      <property name="text">
+                       <string>KEEP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ZERO</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>REPLACE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INVERT</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="label_29">
+                     <property name="text">
+                      <string>Stencil and Depth Pass</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QComboBox" name="frontStencilAndDepthPass">
+                     <item>
+                      <property name="text">
+                       <string>KEEP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>ZERO</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>REPLACE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INCREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>DECREMENT WRAP</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>INVERT</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="saveChanges">
+               <property name="text">
+                <string>Save Changes</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QComboBox" name="snippetComboBox">
+         <item>
+          <property name="text">
+           <string>random</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>getNormalMatrix</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>worldPositionFromDepth</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>calcLambert</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>calcPhong</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>getEyePositionFromView</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>dynamicGaussianBlur</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>linearizeDepth</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="addSnippet">
+         <property name="text">
+          <string>Add Snippet</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QPushButton" name="reloadView">
@@ -145,6 +1398,12 @@ void main()
             <property name="text">
              <string>Add Son</string>
             </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -154,6 +1413,9 @@ void main()
             </property>
             <property name="text">
              <string>Remove Son</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

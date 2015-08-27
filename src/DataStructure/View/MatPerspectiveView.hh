@@ -17,7 +17,6 @@ public:
     explicit MatPerspectiveView(QWidget *parent = 0);
     ~MatPerspectiveView();
 
-    glm::mat4 getPerspective() const;
     Ui::MatPerspectiveView *getUi() const { return (ui); }
 
 private:

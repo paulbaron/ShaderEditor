@@ -1,14 +1,14 @@
 #include "AbstractData.hh"
 #include "DataStructureManager.hh"
 
-AbstractData::AbstractData()
+AbstractData::AbstractData(QString prefix)
 {
-    static int id = 0;
+    int id = 0;
 
     do
     {
-        _name = "Data_" + QString::number(id++);
-    } while (DataStructureManager::getManager()->getData(_name) != NULL);
+        _name = prefix + QString::number(id++);
+    } while (DataStructureManager::getManager()->getInstance(_name) != NULL);
     _view = NULL;
 }
 

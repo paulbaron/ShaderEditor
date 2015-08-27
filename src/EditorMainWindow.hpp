@@ -11,6 +11,10 @@ namespace Ui
     class EditorMainWindow;
 }
 
+class RenderPassUi;
+class RenderPassListUi;
+class DataStructureEditor;
+
 class EditorMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -19,9 +23,19 @@ public:
     explicit EditorMainWindow(QWidget *parent = 0);
     ~EditorMainWindow();
 
+public slots:
+    void saveProject();
+    void saveProjectAs();
+    void loadProject();
+    void newProject();
+
 private:
     Ui::EditorMainWindow *ui;
-    QGraphicsScene _scene;
+
+    RenderPassUi *_renderPassUi;
+    RenderPassListUi *_renderPassListUi;
+    DataStructureEditor *_dataStructureEditor;
+    QString _savePath;
 };
 
 #endif // QIWIMAINWINDOW_HPP

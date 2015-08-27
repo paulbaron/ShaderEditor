@@ -1,16 +1,22 @@
 #include "DataStructureEditor.hh"
 #include "ui_DataStructureEditor.h"
+#include "ui_RenderPassUi.h"
 
+#include "RenderPassManager.hh"
 #include "DataStructure/View/ContainerView.hh"
 
 #include "DataStructure/DataStructureManager.hh"
+#include "DataStructure/Vec2BufferData.hh"
 #include "DataStructure/Vec3BufferData.hh"
-#include "DataStructure/TextureData.hh"
+#include "DataStructure/IndexBufferData.hh"
+#include "DataStructure/RenderTextureData.hh"
+#include "DataStructure/LoadedTextureData.hh"
 #include "DataStructure/Mat4Data.hh"
+#include "DataStructure/VecData.hpp"
 
 #include <assert.h>
 
-DataStructureEditor::DataStructureEditor(QWidget *parent) :
+DataStructureEditor::DataStructureEditor(RenderPassUi *renderPassui, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DataStructureEditor)
 {
@@ -24,27 +30,19 @@ DataStructureEditor::DataStructureEditor(QWidget *parent) :
     _isAddingSon = false;
     _isRemovingSon = false;
 
-    _dataTypes.append("data container (empty data structure)");
-//    _dataTypes.append("float vertex buffer (draw call)");
-//    _dataTypes.append("vec2 vertex buffer (draw call)");
-    _dataTypes.append("vec3 vertex buffer (draw call)");
-//    _dataTypes.append("vec4 vertex buffer (draw call)");
-    _dataTypes.append("texture (sampler 2D / render texture)");
-//    _dataTypes.append("float");
-//    _dataTypes.append("int");
-//    _dataTypes.append("uint");
-//    _dataTypes.append("vec2");
-//    _dataTypes.append("vec3");
-//    _dataTypes.append("vec4");
-//    _dataTypes.append("int vec2");
-//    _dataTypes.append("int vec3");
-//    _dataTypes.append("int vec4");
-//    _dataTypes.append("uint vec2");
-//    _dataTypes.append("uint vec3");
-//    _dataTypes.append("uint vec4");
-//    _dataTypes.append("mat2 (2D rotation and scale)");
-//    _dataTypes.append("mat3 (3D rotation and scale / 2D transform)");
-    _dataTypes.append("mat4 (3D transform / projection)");
+    _dataTypes.append("Data Container (Empty Data Structure)");
+    _dataTypes.append("Vec2 Vertex Buffer (Draw Call)");
+    _dataTypes.append("Vec3 Vertex Buffer (Draw Call)");
+    _dataTypes.append("Index Buffer (Draw Call)");
+    _dataTypes.append("Render Texture (Sampler 2D / Output Texture)");
+    _dataTypes.append("Loaded Texture (Sampler 2D)");
+    _dataTypes.append("Float");
+    _dataTypes.append("Vec2");
+    _dataTypes.append("Vec3");
+    _dataTypes.append("Vec4");
+    _dataTypes.append("Mat4 (3D Transform / Projection)");
+
+    _renderPassUi = renderPassui;
 
     ui->dataTypes->addItems(_dataTypes);
 
@@ -61,32 +59,75 @@ DataStructureEditor::~DataStructureEditor()
     delete ui;
 }
 
+void DataStructureEditor::reloadUi()
+{
+    _addSon = false;
+    _removeSon = false;
+    _isAddingSon = false;
+    _isRemovingSon = false;
+    ui->deleteData->setEnabled(false);
+    ui->treeWidget->clear();
+    // Remove widget
+    QLayoutItem *item = ui->dataViewGrid->takeAt(0);
+    if (item != NULL)
+    {
+        item->widget()->setParent(NULL);
+        delete item;
+    }
+    for (QList<SInstance*>::const_iterator it =
+            DataStructureManager::getManager()->getRoot().begin();
+         it != DataStructureManager::getManager()->getRoot().end();
+         ++it)
+    {
+        ui->treeWidget->addTopLevelItem((*it)->getTreeItem());
+    }
+}
+
 void DataStructureEditor::createData()
 {
-    SInstance *dataToAdd;
+    SInstance *dataAdded;
 
     switch (ui->dataTypes->currentIndex())
     {
     case 0:
-        dataToAdd = new SContainerInstance();
+        dataAdded = DataStructureManager::getManager()->addContainer();
         break;
     case 1:
-        dataToAdd = new SDataInstance(new Vec3BufferData());
+        dataAdded = DataStructureManager::getManager()->addData(new Vec2BufferData);
         break;
     case 2:
-        dataToAdd = new SDataInstance(new TextureData());
+        dataAdded = DataStructureManager::getManager()->addData(new Vec3BufferData);
         break;
     case 3:
-        dataToAdd = new SDataInstance(new Mat4Data());
+        dataAdded = DataStructureManager::getManager()->addData(new IndexBufferData);
+        break;
+    case 4:
+        dataAdded = DataStructureManager::getManager()->addData(new RenderTextureData);
+        break;
+    case 5:
+        dataAdded = DataStructureManager::getManager()->addData(new LoadedTextureData);
+        break;
+    case 6:
+        dataAdded = DataStructureManager::getManager()->addData(new VecData<glm::vec1>);
+        break;
+    case 7:
+        dataAdded = DataStructureManager::getManager()->addData(new VecData<glm::vec2>);
+        break;
+    case 8:
+        dataAdded = DataStructureManager::getManager()->addData(new VecData<glm::vec3>);
+        break;
+    case 9:
+        dataAdded = DataStructureManager::getManager()->addData(new VecData<glm::vec4>);
+        break;
+    case 10:
+        dataAdded = DataStructureManager::getManager()->addData(new Mat4Data());
         break;
     default:
         assert(!"Not implemented yet!");
         break;
     }
-    DataStructureManager::getManager()->addData(dataToAdd);
-    QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
+    QTreeWidgetItem *item = dataAdded->getTreeItem();
 
-    item->setText(0, dataToAdd->getName());
     ui->treeWidget->addTopLevelItem(item);
 }
 
@@ -96,11 +137,10 @@ void DataStructureEditor::deleteData()
     QLayoutItem *item = ui->dataViewGrid->takeAt(0);
     item->widget()->setParent(NULL);
     delete item;
-    // Remove current data
     SInstance *current = DataStructureManager::getManager()->getCurrent();
+    recursiveDeleteDataFromRenderPass(current);
+    // Remove current data
     DataStructureManager::getManager()->removeCurrent();
-    current->destroy();
-    delete current;
     // Remove from tree view
     QTreeWidgetItem *toRemove = ui->treeWidget->currentItem();
     if (toRemove->parent())
@@ -125,11 +165,11 @@ void DataStructureEditor::selectionChanged()
             _isAddingSon = true;
 
             // Change hierarchy in data structure
-            QString currentItemName = ui->treeWidget->currentItem()->text(0);
-            SInstance *selected = DataStructureManager::getManager()->getData(currentItemName);
+            int currentItemId = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+            SInstance *selected = DataStructureManager::getManager()->getInstance(currentItemId);
             SContainerInstance *container = static_cast<SContainerInstance*>(DataStructureManager::getManager()->getCurrent());
 
-            DataStructureManager::getManager()->removeData(selected);
+            DataStructureManager::getManager()->removeInstance(selected);
             container->addSon(selected);
 
             // Change hierarchy in tree view
@@ -142,6 +182,8 @@ void DataStructureEditor::selectionChanged()
                 toMove = ui->treeWidget->takeTopLevelItem(idx.row());
 
             _currentSelection->addChild(toMove);
+
+            ui->treeWidget->clearSelection();
             ui->treeWidget->setCurrentItem(_currentSelection);
 
             _addSon = false;
@@ -154,13 +196,12 @@ void DataStructureEditor::selectionChanged()
 
             QTreeWidgetItem *toMove = ui->treeWidget->currentItem();
 
-            if (toMove->parent() == _currentSelection)
+            // Change in data structure
+            SInstance *toMoveData = DataStructureManager::getManager()->getInstance(toMove->data(0, Qt::UserRole).toInt());
+            SContainerInstance *father = toMoveData->getParent();
+            // Remove it from manager and put it one level higher
+            if (father->removeSon(toMoveData))
             {
-                // Change in data structure
-                SInstance *toMoveData = DataStructureManager::getManager()->getData(toMove->text(0));
-                SContainerInstance *father = toMoveData->getParent();
-                // Remove it from manager and put it one level higher
-                father->removeSon(toMoveData);
                 father->getParent()->addSon(toMoveData);
 
                 // Change it in the view
@@ -174,6 +215,7 @@ void DataStructureEditor::selectionChanged()
                     ui->treeWidget->addTopLevelItem(toMove);
                 }
             }
+            ui->treeWidget->clearSelection();
             ui->treeWidget->setCurrentItem(_currentSelection);
 
             _removeSon = false;
@@ -192,9 +234,9 @@ void DataStructureEditor::selectionChanged()
                 item->widget()->setParent(NULL);
                 delete item;
             }
-            QString selectedName = ui->treeWidget->currentItem()->text(0);
-            SInstance *current = DataStructureManager::getManager()->getData(selectedName);
-            DataStructureManager::getManager()->setCurrent(current);
+            int selectedId = ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt();
+            SInstance *current = DataStructureManager::getManager()->getInstance(selectedId);
+            DataStructureManager::getManager()->setCurrent(selectedId);
             if (current->getType() == DATA_INSTANCE)
             {
                 ui->dataViewGrid->addWidget(static_cast<SDataInstance*>(current)->getData()->getView());
@@ -230,3 +272,41 @@ void DataStructureEditor::setRemoveSon()
     _removeSon = !_removeSon;
 }
 
+void DataStructureEditor::recursiveDeleteDataFromRenderPass(SInstance *data)
+{
+    if (data->getType() == DATA_INSTANCE)
+    {
+        SDataInstance *current = static_cast<SDataInstance*>(data);
+        // Remove from Render Passes
+        RenderPassManager::getManager()->removeData(current->getData());
+        // Remove from the UI inputs of the render pass
+        QTreeWidget *renderPassTreeWidget = _renderPassUi->getUi()->treeWidget;
+        QList<QTreeWidgetItem*> inputToRemove = renderPassTreeWidget->findItems(
+                                current->getData()->getName(),
+                                Qt::MatchContains | Qt::MatchRecursive);
+        for (QList<QTreeWidgetItem*>::const_iterator it = inputToRemove.begin();
+             it != inputToRemove.end();
+             ++it)
+        {
+            if ((*it)->parent() != NULL)
+            {
+                (*it)->parent()->takeChild((*it)->parent()->indexOfChild(*it));
+            }
+            else
+            {
+                renderPassTreeWidget->takeTopLevelItem(renderPassTreeWidget->indexOfTopLevelItem(*it));
+            }
+            delete *it;
+        }
+    }
+    else if (data->getType() == CONTAINER_INSTANCE)
+    {
+        SContainerInstance *current = static_cast<SContainerInstance*>(data);
+        for (QList<SInstance*>::const_iterator it = current->begin();
+             it != current->end();
+             ++it)
+        {
+            recursiveDeleteDataFromRenderPass(*it);
+        }
+    }
+}
