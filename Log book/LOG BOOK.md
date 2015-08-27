@@ -414,12 +414,12 @@ There is now a generic widget to render _OpenGL_ textures on screen.
 It is used to display the thumbnails of the loaded images and the current render pass.
 A bug on the projection matrix has been corrected (degres instead of radians).
 
+![texture loading advanced](https://cloud.githubusercontent.com/assets/5550866/9515009/6c6ab63a-4c96-11e5-8954-8ac59093253f.png)
+
 #### Goals for tomorrow
 - Some textures causes a segfault on load, check why _DevIL_ returns wrong parameters.
 - The loaded textures are flipped vertically.
 - Start programming an interface for the _OpenGL_ states configuration (depth test, depth writing, face culling, stencil test...).
-
-![texture loading advanced](https://cloud.githubusercontent.com/assets/5550866/9515009/6c6ab63a-4c96-11e5-8954-8ac59093253f.png)
 
 ## 18 July 2015
 
@@ -540,10 +540,10 @@ The error messages from the input tree or the texture loading are now appearing 
 I now have my own Shader object that handle the compilation errors better than the one from Qt (that was writting on std::cerr).
 I now have error messages for any kind of error that the user can do while using the software.
 
+![error message](https://cloud.githubusercontent.com/assets/5550866/9515018/7c153952-4c96-11e5-8e2d-105e1c5b56ca.png)
+
 #### Goals for tomorrow
 - Start the loading and saving of project
-
-![error message](https://cloud.githubusercontent.com/assets/5550866/9515018/7c153952-4c96-11e5-8e2d-105e1c5b56ca.png)
 
 ## 13 August 2015
 
