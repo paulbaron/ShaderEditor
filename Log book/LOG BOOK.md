@@ -337,7 +337,7 @@ Here are the final rules for the input tree:
 I totally finished the input checker and I have fixed some bugs on the input tree.
 Complex rendering in a single pass is now working perfectly.
 
-// Display screenshot
+![multiple rendering working](https://cloud.githubusercontent.com/assets/5550866/9514994/5a21cd9c-4c96-11e5-8661-761793ecf903.png)
 
 #### Goals for tomorrow
 - Start implementing an index buffer for indexed rendering
@@ -402,7 +402,7 @@ I also integrated the image library _DevIL_ to the project.
 #### Done today
 The texture loading is now working.
 
-// Display Screenshot
+![textures working](https://cloud.githubusercontent.com/assets/5550866/9515016/7450c11e-4c96-11e5-9370-c6ef51cc8657.png)
 
 #### Goals for tomorrow
 - Try to display a thumbnail of the loaded texture in the data structure editor
@@ -413,6 +413,8 @@ The texture loading is now working.
 There is now a generic widget to render _OpenGL_ textures on screen.
 It is used to display the thumbnails of the loaded images and the current render pass.
 A bug on the projection matrix has been corrected (degres instead of radians).
+
+![texture loading advanced](https://cloud.githubusercontent.com/assets/5550866/9515009/6c6ab63a-4c96-11e5-8954-8ac59093253f.png)
 
 #### Goals for tomorrow
 - Some textures causes a segfault on load, check why _DevIL_ returns wrong parameters.
@@ -449,7 +451,7 @@ I also started to create an OpenGLState class to handle the _OpenGL_ state in ea
 #### Done today
 The _OpenGL_ state is now working.
 
-// screenshot
+![opengl state](https://cloud.githubusercontent.com/assets/5550866/9515006/6688e2f0-4c96-11e5-9d8e-13d50ffc839f.png)
 
 #### Things to finish in the software (in order of priority)
 - Make multi pass rendering work
@@ -537,6 +539,8 @@ The error messages from the input tree or the texture loading are now appearing 
 #### Done today
 I now have my own Shader object that handle the compilation errors better than the one from Qt (that was writting on std::cerr).
 I now have error messages for any kind of error that the user can do while using the software.
+
+![error message](https://cloud.githubusercontent.com/assets/5550866/9515018/7c153952-4c96-11e5-8e2d-105e1c5b56ca.png)
 
 #### Goals for tomorrow
 - Start the loading and saving of project
@@ -657,7 +661,7 @@ I have added in the snippets of code a function that applies a blur on a sampler
 #### Done today
 I have programmed a depth of field effect in addition to the deferred rendering:
 
-// Screen shot here
+![dof](https://cloud.githubusercontent.com/assets/5550866/9515022/7efada6e-4c96-11e5-93d5-29d960f1370a.png)
 
 #### Goals for tomorrow
 - Produce a release version of the software
