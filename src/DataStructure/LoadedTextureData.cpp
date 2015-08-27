@@ -4,8 +4,6 @@
 #include "View/LoadedTextureDataView.hh"
 #include "ui_LoadedTextureDataView.h"
 
-#include "EditorException.hh"
-
 #include "QtOpenGLFunctions.hh"
 
 #include <IL/il.h>
@@ -47,10 +45,9 @@ void LoadedTextureData::loadTexture(QString filePath)
     {
         error = ilGetError();
         QString title = "Could not load the image.";
-        QString details = "The image file " + filePath +
-                "has not been loaded.\nIL error: '" +
+        QString details = "The image file '" + filePath +
+                "'' has not been loaded.\nIL error: '" +
                 iluErrorString(error) + "'.";
-
 
         ilBindImage(0);
         ilDeleteImages(1, &imageID);

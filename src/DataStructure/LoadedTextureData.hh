@@ -3,6 +3,8 @@
 
 #include "ATextureData.hh"
 
+#include "EditorException.hh"
+
 #include <QDir>
 
 #include <boost/serialization/string.hpp>
@@ -30,7 +32,14 @@ public:
         std::string texturePath;
         ar & boost::serialization::make_nvp("texturePath", texturePath);
         _texturePath = QDir::current().absoluteFilePath(QString(texturePath.c_str()));
-        loadTexture(_texturePath);
+        try
+        {
+            loadTexture(_texturePath);
+        }
+        catch (EditorException &e)
+        {
+            e.displayErrorMessage();
+        }
         updateUi();
         saveChanges();
     }

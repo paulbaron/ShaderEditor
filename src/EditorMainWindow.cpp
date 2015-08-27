@@ -8,6 +8,7 @@
 #include "RenderPassListUi.hh"
 
 #include <QFileDialog>
+#include <QMessageBox>
 #include <fstream>
 
 #include <boost/archive/xml_oarchive.hpp>
@@ -89,8 +90,28 @@ void EditorMainWindow::loadProject()
 
         boost::archive::xml_iarchive ia(file);
 
-        ia >> boost::serialization::make_nvp("DataStructureManager", *DataStructureManager::getManager())
-            >> boost::serialization::make_nvp("RenderPassManager", *RenderPassManager::getManager());
+        try
+        {
+            ia >> boost::serialization::make_nvp("DataStructureManager", *DataStructureManager::getManager())
+                >> boost::serialization::make_nvp("RenderPassManager", *RenderPassManager::getManager());
+        }
+        catch (boost::archive::archive_exception &e)
+        {
+            QMessageBox msgBox;
+
+            msgBox.setWindowTitle("Loading Error");
+            msgBox.setText("Could not load file '" + loadPath + "'");
+            msgBox.setDetailedText(e.what());
+            msgBox.setIcon(QMessageBox::Warning);
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+
+            QSpacerItem* horizontalSpacer = new QSpacerItem(500, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+            QGridLayout* layout = (QGridLayout*)msgBox.layout();
+            layout->addItem(horizontalSpacer, layout->rowCount(), 0, 1, layout->columnCount());
+
+            msgBox.exec();
+        }
 
         QDir::setCurrent(oldCurrentPath);
         _renderPassUi->setEnabled(false);
